@@ -1,0 +1,169 @@
+<html>
+<head>
+	<title>Experiment</title>
+	<script type="text/javascript" src="../js/engine.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+
+	<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var games=new Game();
+
+			function refresh(){
+				var game=games.getGameData();
+				$('#score').html(game.score);
+				$('#current').html(game.level.current);
+				$('#toGo').html(game.level.toGo);
+				$('#comboCount').html(game.comboCount);
+				$('#combo').html(JSON.stringify(game.combo));
+				$('#multipolar').html(game.bonus.multipolar.count+' '+game.bonus.multipolar.isActive);
+				$('#undo').html(game.bonus.undo.count);
+				$('#bomb').html(game.bonus.bomb.count+' '+game.bonus.bomb.isActive);
+				$('#turnCount').html(game.turn.turnCount);
+				$('#turnCurrentLevel').html(game.turn.turnCurrentLevel);
+				$('#turnValue').html(JSON.stringify(game.turnValue));
+				$('#scores').html(game.scores);
+
+				html='';
+				for(i=0;i<game.gameMap.length;i++){
+					html=html+'<tr>'
+					for(j=0;j<game.gameMap[i].length;j++){
+						var v=game.gameMap[i][j]==0?'<td class="clickGrid" data-x="'+i+'" data-y="'+j+'"></td>':'<td data-x="'+i+'" data-y="'+j+'">'+game.gameMap[i][j]+'</td>';
+						html=html+v;
+					}
+					html=html+'</tr>';
+				}
+				$('#board').html(html);
+				$('.clickGrid').click(function(e){
+					var x=$(e.target).data('x');
+					var y=$(e.target).data('y');
+					var s=games.turn(x,y);
+					refresh();
+					if(s.isGameOver){
+						$('#board').html('<tr><td>Game Oveeer</td></tr>');					
+					}
+
+				})					
+			}
+
+			games.newGame();
+			refresh();
+
+			$('#newGame').click(function(){
+				games.newGame();
+				refresh();
+			});
+			$('#continue').click(function(){
+				games.continueGame();
+				console.log('asdad');
+				refresh();
+			});	
+			$('#multipolarButton').click(function(){
+				var x=games.bonus('multipolar');
+				console.log(x);
+				refresh();
+			});	
+			$('#bombButton').click(function(){
+				var x=games.bonus('bomb');
+				console.log('asdad'+x);
+				refresh();
+			});
+			$('#undoButton').click(function(){
+				console.log('asdad'+result);
+				var result=games.undo();
+				refresh();
+			});
+			$('#turn').click(function(){
+				result=games.turn($('#x').val(),$('#y').val());
+				refresh();
+			});
+			$('.clickGrid').click(function(e){
+				var x=$(e.target).data('x');
+				var y=$(e.target).data('y');
+				var s=games.turn(x,y);
+				refresh();
+				if(s.isGameOver){
+					$('#board').html('<tr><td>Game Oveeer</td></tr>');					
+				}
+			})											
+		});
+	</script>
+</head>
+<body>
+	<div style="display:inline-block;max-width:450px;">
+		<div style="display:inline;">
+			<h5>Turn</h5>
+			<input id="x">
+			<input id="y">
+			<button id="turn">Turn!</button>
+		</div>
+		<h4>Data</h4>
+		<table style="max-width:450px;">
+			<tr>
+				<td>score</td>
+				<td>:</td>
+				<td id="score"></td>
+			</tr>
+			<tr>
+				<td>Level</td>
+				<td>:</td>
+				<td>current:<span id="current"></span>,toGo:<span id="toGo"></span></td>
+			</tr>
+			<tr>
+				<td>Combo Count</td>
+				<td>:</td>
+				<td id="comboCount"></td>
+			</tr>
+			<tr>
+				<td>Combo</td>
+				<td>:</td>
+				<td id="combo"></td>
+			</tr>
+			<tr>
+				<td>Bonus</td>
+				<td>:</td>
+				<td>
+					<ul>
+						<li>Multipolar : <span id="multipolar"></span><span class="isActiveMul"></span></li>
+						<li>Undo : <span id="undo"></span></li>
+						<li>Bomb : <span id="bomb"></span><span class="isActiveBomb"></span></li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>Turn</td>
+				<td>:</td>
+				<td>
+					<ul>
+						<li>TurnCount : <span id="turnCount"></span></li>
+						<li>TurnCurrentLevel : <span id="turnCurrentLevel"></span></li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>TurnValue</td>
+				<td>:</td>
+				<td id="turnValue"></td>
+			</tr>
+			<tr>
+				<td>Scores</td>
+				<td>:</td>
+				<td id="scores"></td>
+			</tr>
+
+		</table>
+	</div>
+	<div class="mn-content" style="display:inline-block;">
+		<h4>Board</h4>
+		<div style="display:inline-block;margin:5px">
+			<button id="newGame">New Game</button>
+			<button id="continue">Continue</button>
+			<button id="undoButton">Undo</button>
+			<button id="multipolarButton">Multipolar</button>
+			<button id="bombButton">Bomb</button>
+		</div>
+		<table id="board"></table>
+	</div>
+</body>
+</html>
+

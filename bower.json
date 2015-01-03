@@ -1,0 +1,24 @@
+{
+  "name": "Reactive Number",
+  "version": "0.0.1",
+  "authors": [
+    "AdnanHP <adnan@teknimo.com>"
+  ],
+  "description": "What happen if number has",
+  "main": "index.html",
+  "keywords": [
+    "Game",
+    "Math",
+    "Game"
+  ],
+  "license": "Propertiary",
+  "homepage": "http://www.teknimo.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

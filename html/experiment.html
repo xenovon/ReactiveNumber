@@ -1,0 +1,136 @@
+<html>
+<head>
+	<title>Experiment</title>
+
+</head>
+<body>
+	<div id='anu'>Adnan</div>
+	<ul id="list">
+
+	</ul>
+	<button onclick=generateScores()>Scores</button>
+
+	<script type="text/javascript">
+
+	var Test = function(adnan){
+		var x=document.getElementById("anu");
+		x.innerHTML='hallo '+adnan;
+	};
+
+	var Game = function(isNew){
+		var a={adnan:"adnan",ganteng:{a:"a",b:"b"}};
+		localStorage.setItem('adnan',JSON.stringify(a));
+	}
+		var test=new Game('adnan');
+
+	function retrieve(){
+		var a=JSON.parse(localStorage.getItem('adnan'));
+		var test=new Test(a.adnan+' '+a.ganteng.a);
+	}
+
+	var constant={'boardSize':9};
+	console.log(constant.boardSize);
+
+	function isEven(val){
+      return val%2==0?true:false;
+	}
+
+	// console.log(isEven(5)+" "+isEven(6));
+
+	// for(x=5000;x<5001;x++){
+	// 	var f=x*2-1;
+	// 	var y=x*5+5;
+	// 	var d=document.getElementById('list');
+	// 	d.innerHTML=d.innerHTML+'<li>'+x+'-('+f+'-'+y+')</li>';
+	// }
+ //   function getRandomInt(min, max) {
+ //      return Math.floor(Math.random() * (max - min)) + min;
+ //   }
+ //   	for(x=0;x<500;x++){
+ //   		console.log(getRandomInt(9,11));
+	// }
+
+
+	function GameData(){
+
+	   this.score=0;
+	   this.level={'current':0,'toGo':0};
+	   this.comboCount=0;
+	   this.combo={};
+	   this.bonus={
+	      multipolar:{count:1,isActive:false},
+	      undo:{count:3},
+	      bomb:{count:1,isActive:false}
+	   }
+	   this.gameMap;
+	   this.turn={'turnCount':0, 'turnCurrentLevel':0};
+	   this.turnValue=[0,0,0,0];
+	}
+
+
+	var c={'bS':9, //BoardSize
+	       'bombMin':4, //JUmlah minimal combo untuk bisa dapet bomb;
+	       'mulMin':2, //jumlah minimal kotak ilang yang bisa dapet bomb;
+	       'sKey':'fad49816c28962ac446224d112cecafd', //kunci untuk local storage dan enkripsi
+	       'match':10
+	};
+
+   function enc(uncoded) {
+	    var key = 100; //Any integer value
+	    var result = "";
+	    var key=c.match;
+	    for(i=0; i<uncoded.length;i++)
+	    {
+	        result += String.fromCharCode(key^uncoded.charCodeAt(i));
+	    }
+      return result;  
+   }  
+
+	var data=new GameData();
+
+	localStorage.setItem(enc('nananabatman'),enc(JSON.stringify(data)));
+	
+	var gameData=JSON.parse(enc(localStorage.getItem(enc('nananabatman'))));
+
+
+	var x=document.getElementById("anu");
+	x.innerHTML=JSON.stringify(gameData);
+	// x.innerHTML=localStorage.getItem(c.sKey);
+
+   /* Blok fungsi untuk melakukan perhitungan validator--------------------- */
+	function aa(a,b,c){
+	  return a*b/c+(a-c*b);
+	}
+	function bb(b,c,d){
+	  return b+c+d;
+	} 
+	function cc(c,d,e){
+	  return c*d+e;
+	}
+	function dd(d,e,f){
+	  return cc(e,d,d)+aa(f,e,e);
+	}
+   function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+   }
+
+	function generateScores(){
+		var a=getRandomInt(22,55);
+		var b=getRandomInt(1,50);
+		var c=getRandomInt(1,5);
+		var d=getRandomInt(1,5);
+		var e=getRandomInt(3,50);
+		var f=getRandomInt(1,200);
+		var x=document.getElementById("anu");
+		x.innerHTML='hallo '+(aa(a,b,c)+bb(b,c,e)+cc(c,d,e)-dd(d,e,f));
+
+	}
+
+
+	</script>
+<button onclick=retrieve()>aaa</button>
+
+
+</body>
+
+</html>
