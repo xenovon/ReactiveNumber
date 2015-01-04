@@ -277,7 +277,7 @@ function Game(){
 
 
       r.isGameOver=isGameOver();
-      // console.log(JSON.stringify(emptyBlockMap));
+      // console.log(JSON.stringify(emptyBlockMap)+' '+r.isGameOver);
       // console.timeEnd('turn');
  
       return r;
@@ -384,6 +384,7 @@ function Game(){
          var x=parseInt(selected.split('.')[0]);
          var y=parseInt(selected.split('.')[1]);
          if(map[x][y]==0){
+            // map[x][y]=getRandomInt(20,55); //sesuai batas level
             map[x][y]=getRandomInt(level*2-1,level*5+5); //sesuai batas level
             updateBlockMap(x,y);
             count++;
@@ -418,7 +419,7 @@ function Game(){
 
    /* Menghitung apakah game over atau tidak */
    function isGameOver(){
-
+      console.log(!(emptyBlockMap.length==0));
       if(!(emptyBlockMap.length==0)){
          return false;
       }
