@@ -13,6 +13,7 @@
    	bertambah akan menambah tingkat kesulitan game. Jika angka setelah dikurangi <=0, maka angka 
    	akan hilang. 
    	  
+
    	Misinya adalah, hilangkan angka sebanyak mungkin dan minimalisir angka yang bertambah. 
       Game berakhir ketika papan penuh.
    5. Sistem Level
@@ -29,13 +30,13 @@
         Sisa giliran= Jumlah giliran level berjalan - Level*5+5;
         Range Angka = [level*2-1]-[Level*5+5]
    4. Bonus : Multipolar : Bisa mengurangi baik angka ganjil maupun genap. (tidak ada angka bertambah)
-			   			  : Syarat : Bisa ngilangin angka >=5
+			   			  : Syarat,  combo 6x;
 			   Undo 	     : Mengembalikan  posisi kesebelumnya 
 			   			  : Syarat awal 2 kali undo, tapi bisa bertambah. ketika nambah level. 
 			   Bomb	     : Menghilangkan semua angka disekliling, 
-			   			  : Syarat,  combo 5x;
+			   			  :  Syarat : Bisa ngilangin angka >=4
       Bonus bisa dipakai ketika jumlahnya masih ada. 
-   5. Score sesuai dengan jumlah pengurangan yg terjadi, dan dikalikan combo.
+   5. Score sesuai dengan jumlah pengurangan yg terjadi, dan dikalikan level.
    6. Bisa nyimpen score, untuk nyimpen, masukan nama, email atau social media.
    7. Jika udah nyimpen, bisa login
    8. Share ke facebook.
@@ -56,41 +57,51 @@
 
 */
 var c={'bS':9, //BoardSize
-       'bombMin':4, //JUmlah minimal combo untuk bisa dapet bomb;
-       'mulMin':5, //jumlah minimal kotak ilang yang bisa dapet multipolar;
+       'bombMin':4, //JUmlah minimal kotak ilang untuk bisa dapet bomb;
+       'mulMin':6, //jumlah combo yang bisa dapet multipolar;
        'sKey':'nananabatman', //kunci untuk local storage dan enkripsi
-       'match':5,
-       'initCount':20//Jumlah angka random diawal.
+       'match':5, //variabel untuk ngacak kata
+       'popCount':1,//jumlah angka yang muncul entah darimana ketika turn
+       'undoStart':2, //Jumlah undo awal
+       'initCount':15//Jumlah angka random diawal.
 };
 /* Fungsi Utama Game */
 function GameData(){
 
    this.score=0;
-   this.level={'current':0,'toGo':0};
+   this.level={'current':0,'toGo':0,'totalThisLevel':0};
    this.comboCount=0;
    this.combo=[];
    this.bonus={
       multipolar:{count:1,isActive:false},
-      undo:{count:3},
+      undo:{count:c.undoStart},
       bomb:{count:1,isActive:false}
    }
-   this.gameMap;
+   this.gameMap=[];
    this.turn={'turnCount':0, 'turnCurrentLevel':0};
    this.turnValue=[0,0,0,0];
-   this.scores; //Variabel untuk validasi game save. Untuk keamanan, biar orang gabisa ubah2 sembarangan.
+   this.scores=0; //Variabel untuk validasi game save. Untuk keamanan, biar orang gabisa ubah2 sembarangan.
 }
 
 function Game(){
    var gameData;
-   var gameHistory=[]; //menyimpan array value sebelumnya 
+   var gameHistory=[]; //menyimpan array value sebelumnya
+   var emptyBlockMap=[];//key value array untuk memetakan kotak kosong di board. 
+                        //Setiap ada perubahan pada board, maka variabel itu diubah juga. 
+
+   var keyGameData=enc(c.sKey+''+c.sKey);
+   var keyGameHistory=enc(c.sKey+''+c.sKey+''+c.sKey);
 
    this.getGameData=function(){return gameData};
    this.getGameHistory=function(){return gameHistory};
+   this.getEmptyBlockMap=function(){return emptyBlockMap};
 
    /*-------------- Public Method-------------- */
    this.newGame=function(){
       gameData=new GameData();
-      map=gameData.gameMap;
+      gameHistory=[];
+      emptyBlockMap=[];
+      var map=gameData.gameMap;
       
       //inisialisasi
       map=new Array(c.bS);
@@ -101,25 +112,19 @@ function Game(){
          }
       }
 
-      //inisialisasi 10 angka di kordinat acak dan turn value
-      var count=0;
-      var iter=0;
-      while(!(count==c.initCount)){
-         var x=getRandomInt(0,9);
-         var y=getRandomInt(0,9);
-         if(map[x][y]==0){
-            map[x][y]=getRandomInt(1,11);
-            count++;
-         }
-         iter++;
-      }
-      console.log(iter);
 
       for(var i=0;i<4;i++){
          gameData.turnValue[i]=getRandomInt(1,11);
       }
       gameData.gameMap=map;
-
+      //inisialisasi gameMap
+      for(i=0;i<c.bS;i++){
+            for(j=0;j<c.bS;j++){
+               updateBlockMap(i,j);
+         }
+      }
+      //inisialisasi 15 angka di kordinat acak dan turn value
+      popOut(c.initCount);
 
       // Uji Coba
       // for(i=0;i<c.bS;i++){
@@ -132,13 +137,24 @@ function Game(){
    }
 
    /*Continue game*/
+   this.isHasContinue=function(){
+      if(localStorage.getItem(keyGameData)!=undefined){
+         return true;
+      }else{
+         return false;
+      }
+   }
    this.continueGame=function(){
 
-      var temp=localStorage.getItem(enc(c.sKey+'.'+c.sKey));
-      if(temp!=undefined){
+      var temp=localStorage.getItem(keyGameData);
+      var temp2=localStorage.getItem(keyGameHistory);
+
+      if(temp!=undefined && temp2!=undefined){
          gameData=JSON.parse(enc(temp));
          if(!isScoresValid()){
             this.newGame();
+         }else{
+            gameHistory=JSON.parse(enc(temp2));
          }
       }else{
          this.newGame();
@@ -158,11 +174,11 @@ function Game(){
       Step 5: Manipulasi jumlah kombo 
       Step 6: Evaluasi Level
       Step 7: Evaluasi bonus dan apakah  sesuai aturan.
-      Step 8: Mengisi angka untuk pergerakan selanjutnya
+      Step 8: Mengisi angka untuk pergerakan selanjutnya dan menghasilkan angka random muncul entah darimana
       Step 9: Simpan history dan save ke local storage
    */
    this.turn=function(x,y){
-
+      // console.time('turn');
       var r={'error':[],
              'state':'',
              'score':0,
@@ -187,7 +203,7 @@ function Game(){
       if(gameHistory.length>4){
         gameHistory.pop();         
       }
-      gameHistory.unshift(gameData);
+      gameHistory.unshift(JSON.stringify(gameData));
 
 
       multipolar= gameData.bonus.multipolar.isActive;
@@ -195,7 +211,8 @@ function Game(){
 
       //step 3
       gameMap[x][y]=gameData.turnValue[0]; 
-      console.log(gameMap[x][y]);
+      updateBlockMap(x,y);
+      // console.log(gameMap[x][y]);
       if(bomb){
          r.state=turnCounting(gameMap,'bomb',x,y);
 
@@ -227,9 +244,9 @@ function Game(){
 
       if(isCombo(r.state)){
          gameData.comboCount=combo+1;
-         if(gameData.comboCount>=c.bombMin){ //step 7
+         if(gameData.comboCount==c.mulMin){ //step 7
             //Tambah jumlah Bomb
-            gameData.bonus.bomb.count++; 
+            gameData.bonus.multipolar.count++; 
          }
       }else{
          if(gameData.comboCount!=0){
@@ -251,6 +268,8 @@ function Game(){
       gameData.turnValue.shift();
       gameData.turnValue.push(getRandomInt(level*2-1,level*5+5));
 
+
+      popOut(c.popCount);
       /*
          Step 9
       */
@@ -258,6 +277,9 @@ function Game(){
 
 
       r.isGameOver=isGameOver();
+      // console.log(JSON.stringify(emptyBlockMap));
+      // console.timeEnd('turn');
+ 
       return r;
    }
 
@@ -290,8 +312,10 @@ function Game(){
    }   
    this.undo=function(){
       if(this.isCanUndo()){
-         gameData=gameHistory.shift();
-         gameData.bonus.undo.count--;
+         var currentUndo=gameData.bonus.undo.count;
+         gameData=JSON.parse(gameHistory.shift());
+         currentUndo--;
+         gameData.bonus.undo.count=currentUndo;
       }
    }
    this.isCanUndo=function(){
@@ -332,13 +356,54 @@ function Game(){
    }
 
    /*-------------- Private Method-------------- */
+   //Untuk memastikan angka random yang udah muncul, ngga muncul lagi
+   function isDuplicate(x,y,array){
+      var search=x+''+y;
+      var i = a.length;
+      while (i--) {
+         if (a[i] === obj) {
+            return true;
+         }
+      }
+      return false;
+   }
+   //Untuk menghasilkan angka acak berbatas pada lokasi acak di board
+   function popOut(popCount){
+      var count=0;
+      var iter=0;
+      var level=gameData.level.current;
+          level=level==0?level+1:level;  //jika level masih 0, maka tambah 1, akomodasi untuk fungsi new game
+      var map=gameData.gameMap;
 
+      //populasikan array
+      while(!(count==popCount)){
+         var selected=emptyBlockMap[getRandomInt(0,emptyBlockMap.length)];
+         if(selected==undefined){
+            break;
+         }
+         var x=parseInt(selected.split('.')[0]);
+         var y=parseInt(selected.split('.')[1]);
+         if(map[x][y]==0){
+            map[x][y]=getRandomInt(level*2-1,level*5+5); //sesuai batas level
+            updateBlockMap(x,y);
+            count++;
+         }
+         iter++;
+         if(iter>1000){break;}
+      }
+
+
+
+   }
     // Web Storage simply provides a key-value mapping, e.g. localStorage["name"] = username;. Unfortunately, present implementations only support string-to-string mappings, so you need to serialise and de-serialise other data structures. You can do so using JSON.stringify() and JSON.parse().
 
    function save(){
       //update scores dulu. 
       generateScores();
-      localStorage.setItem(enc(c.sKey+'.'+c.sKey),enc(JSON.stringify(gameData)));
+      localStorage.setItem(keyGameData,enc(JSON.stringify(gameData)));
+      localStorage.setItem(keyGameHistory,enc(JSON.stringify(gameHistory)));
+
+      // console.log('gennerate scores aktif');
    }
    function enc(uncoded) {
        var key = 100; //Any integer value
@@ -351,9 +416,30 @@ function Game(){
       return result;  
    }  
 
+   /* Menghitung apakah game over atau tidak */
+   function isGameOver(){
+
+      if(!(emptyBlockMap.length==0)){
+         return false;
+      }
+      // for(i=0;i<c.bS;i++){
+      //       for(j=0;j<c.bS;j++){
+      //          if(gameData.gameMap[i][j]==0){
+      //             return false;
+      //          }
+      //    }
+      // }
+      //Hapus save game
+      localStorage.removeItem(keyGameHistory);
+      localStorage.removeItem(keyGameData);
+      gameHistory=[];
+      return true;
+
+   }
+
    /* Blok fungsi untuk melakukan perhitungan validator--------------------- */
    function aa(a,b,c){
-      return a*b/c+(a-c*b);
+      return a*b*c+(a-c*b);
    }
    function bb(b,c,d){
       return b+c+d;
@@ -364,34 +450,21 @@ function Game(){
    function dd(d,e,f){
       return cc(e,d,d)+aa(f,e,e);
    }
-
-   /* Menghitung apakah game over atau tidak */
-   function isGameOver(){
-      for(i=0;i<c.bS;i++){
-            for(j=0;j<c.bS;j++){
-               if(gameData.gameMap[i][j]==0){
-                  return false;
-               }
-         }
-      }
-      return true;
-
-   }
    function generateScores(){
       var a=gameData.score;
-      var b=gameData.level.currentLevel;
+      var b=gameData.level.current;
       var c=gameData.comboCount;
-      var d=gameData.bonus.multipolar;
+      var d=gameData.bonus.multipolar.count;
       var e=gameData.level.toGo;
       var f=gameData.turn.turnCount;
-
+      // console.log(a+' '+b+' '+c+' '+d+' '+e+' '+f);
       gameData.scores=aa(a,b,c)+bb(b,c,e)+cc(c,d,e)-dd(d,e,f);
    }
    function isScoresValid(){
       var a=gameData.score;
-      var b=gameData.level.currentLevel;
+      var b=gameData.level.current;
       var c=gameData.comboCount;
-      var d=gameData.bonus.multipolar;
+      var d=gameData.bonus.multipolar.count;
       var e=gameData.level.toGo;
       var f=gameData.turn.turnCount;
 
@@ -415,21 +488,25 @@ function Game(){
         Sisa giliran= Jumlah giliran level berjalan - Level*5+5;
         Range Angka = [level*2-1]-[Level*5+5]
    */
+   function countLevel(currentLevel){
+      return currentLevel*5+5;
+   }
    function levelEvaluation(){
 
       var currentLevel=gameData.level.current;
       var turnToGo=gameData.level.toGo;
-      var totalTurn=currentLevel*5+5;
+      var totalTurn=countLevel(currentLevel);
       var turnCount=gameData.turn.turnCount;
       var turnCurrentLevel=gameData.turn.turnCurrentLevel;
-
+      var totalThisLevel=gameData.level.totalThisLevel;
       //Jika game baru mulai, level==0;
       if(currentLevel==0){
 
          currentLevel=1;
-         turnToGo=10;
+         turnToGo=countLevel(currentLevel);
          turnCount=0;
          turnCurrentLevel=0;
+         totalThisLevel=10;
 
       }
 
@@ -438,14 +515,16 @@ function Game(){
       //Jika sisa == 0 maka level ditambah 1 dan direset.
       if(remain==totalTurn){
          currentLevel=currentLevel+1;
-         turnToGo=currentLevel*5+5; //reset
+         turnToGo=countLevel(currentLevel); //reset
          //Tambah jumlah undo
          gameData.bonus.undo.count++; //step 7
          turnCurrentLevel=0;
+         totalThisLevel=turnToGo;
+
 
       //jika masih ada sisa level;
       }else{
-         turnToGo=turnToGo-1;
+         turnToGo--;
          turnCurrentLevel++;
       }
       turnCount++;
@@ -454,6 +533,7 @@ function Game(){
       gameData.level.toGo=turnToGo;
       gameData.turn.turnCount=turnCount;
       gameData.turn.turnCurrentLevel=turnCurrentLevel;
+      gameData.level.totalThisLevel=totalThisLevel;
    }
 
    //Mengetes apakah angka ganjil atau genap
@@ -502,6 +582,7 @@ function Game(){
                   //Mengganti isi angka gameMap. Jika merupakan turn
                   if(!isPreview){
                      gameMap[x1][y1]=newV;
+                     updateBlockMap(x1,y1)
                   }
                }
 
@@ -525,7 +606,7 @@ function Game(){
                }else{continue;}
 
                //cek apakah harus diproses apa tidak
-               if(isMustProcessed(oldV,i,j)){
+               if(isMustProcessed(oldV,i,j,mode)){
 
                   var newV=oldV-turnV;
                       newV=newV<0?0:newV; //untuk memastikan tidak kurang dari 0;
@@ -537,6 +618,8 @@ function Game(){
                   //Mengganti isi angka gameMap. Jika merupakan turn
                   if(!isPreview){
                      gameMap[x1][y1]=newV;
+                     updateBlockMap(x1,y1)
+
                   }
 
                }
@@ -561,7 +644,7 @@ function Game(){
                }else{continue;}
 
                //cek apakah harus diproses apa tidak
-               if(isMustProcessed(oldV,i,j)){
+               if(isMustProcessed(oldV,i,j,mode)){
                   var newV=0;
                   var score=0;
                   // console.log(turnV+' '+oldV);
@@ -583,6 +666,7 @@ function Game(){
                   //Mengganti isi angka gameMap. Jika merupakan turn
                   if(!isPreview){
                      gameMap[x1][y1]=newV;
+                     updateBlockMap(x1,y1);
                   }
 
                }
@@ -613,20 +697,20 @@ function Game(){
          for(var j = 0; j < state[i].length; j++) {
             if(state[i][j].score!=undefined){
                scoreTotal=scoreTotal+state[i][j].score;
-               scoreCount=scoreCount+1;
+               
+               if(state[i][j].newV==0){
+                  scoreCount=scoreCount+1;
+               }
             }
          }
       }
       //Tambah jumlah multipolar
-      if(scoreCount>=c.mulMin){ //step 7
-         gameData.bonus.multipolar.count++;         
+      if(scoreCount>=c.bombMin){ //step 7
+         gameData.bonus.bomb.count++;         
       }
+      // console.log('Score Count '+scoreCount);
 
-      if(combo!=0){
-         return scoreTotal*combo;
-      }else{
-         return scoreTotal;
-      }
+      return scoreTotal*gameData.level.current;
    }
    function isSinglePolar(val1,val2){
       return isEven(val1)==isEven(val2)?true:false;
@@ -653,6 +737,26 @@ function Game(){
    }
    function getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
+   }
+   //Update variabel blockMap
+   //Command 1 =Push  command 2==pull
+   function updateBlockMap(x,y){
+      var value=x+'.'+y;
+      // console.log(gameData.gameMap[x][y]);
+      if(gameData.gameMap[x][y]==0){
+         emptyBlockMap.push(value);
+         // console.log(value);
+      //jika pull, hapus array;
+      }else{
+         for (var i=emptyBlockMap.length-1; i>=0; i--) {
+             if (emptyBlockMap[i] === value) {
+                 emptyBlockMap.splice(i, 1);
+                 break;       
+             }
+         }
+            // console.log(JSON.stringify(value));                           
+      }
+      // console.log(JSON.stringify(emptyBlockMap));
    }
 }
 

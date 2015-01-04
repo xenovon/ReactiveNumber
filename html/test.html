@@ -1,6 +1,7 @@
 <html>
 <head>
 	<title>Experiment</title>
+	<!--  <script type="text/javascript" src="../js/min/engine.min.js"></script> -->
 	<script type="text/javascript" src="../js/engine.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
 
@@ -23,7 +24,8 @@
 				$('#turnCurrentLevel').html(game.turn.turnCurrentLevel);
 				$('#turnValue').html(JSON.stringify(game.turnValue));
 				$('#scores').html(game.scores);
-
+				$('#gameHistory').html(JSON.stringify(games.getGameHistory()));
+				$('#totalThisLevel').html(game.level.totalThisLevel);
 				html='';
 				for(i=0;i<game.gameMap.length;i++){
 					html=html+'<tr>'
@@ -55,21 +57,21 @@
 			});
 			$('#continue').click(function(){
 				games.continueGame();
-				console.log('asdad');
+				// console.log('asdad');
 				refresh();
 			});	
 			$('#multipolarButton').click(function(){
 				var x=games.bonus('multipolar');
-				console.log(x);
+				// console.log(x);
 				refresh();
 			});	
 			$('#bombButton').click(function(){
 				var x=games.bonus('bomb');
-				console.log('asdad'+x);
+				// console.log('asdad'+x);
 				refresh();
 			});
 			$('#undoButton').click(function(){
-				console.log('asdad'+result);
+				// console.log('asdad'+result);
 				var result=games.undo();
 				refresh();
 			});
@@ -107,7 +109,7 @@
 			<tr>
 				<td>Level</td>
 				<td>:</td>
-				<td>current:<span id="current"></span>,toGo:<span id="toGo"></span></td>
+				<td>current:<span id="current"></span>,toGo:<span id="toGo"></span>Total:<span id="totalThisLevel"></span></td>
 			</tr>
 			<tr>
 				<td>Combo Count</td>
@@ -163,6 +165,12 @@
 			<button id="bombButton">Bomb</button>
 		</div>
 		<table id="board"></table>
+	</div>
+	<div style-"display:inline-block;">
+		<h4>Game History</h4>
+		<div id="gameHistory">
+
+		</div>
 	</div>
 </body>
 </html>
