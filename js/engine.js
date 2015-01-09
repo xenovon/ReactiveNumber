@@ -88,7 +88,6 @@ function Game(){
    var gameHistory=[]; //menyimpan array value sebelumnya
    var emptyBlockMap=[];//key value array untuk memetakan kotak kosong di board. 
                         //Setiap ada perubahan pada board, maka variabel itu diubah juga. 
-
    var keyGameData=enc(c.sKey+''+c.sKey);
    var keyGameHistory=enc(c.sKey+''+c.sKey+''+c.sKey);
 
@@ -98,11 +97,11 @@ function Game(){
 
    /*-------------- Public Method-------------- */
    this.newGame=function(){
-      gameData=new GameData();
       gameHistory=[];
       emptyBlockMap=[];
-      var map=gameData.gameMap;
       
+      gameData=new GameData();
+      var map=gameData.gameMap;
       //inisialisasi
       map=new Array(c.bS);
       for(i=0;i<c.bS;i++){
@@ -125,6 +124,8 @@ function Game(){
       }
       //inisialisasi 15 angka di kordinat acak dan turn value
       popOut(c.initCount);
+      //inisialisasi angka level togo
+      gameData.level.toGo=10;
 
       // Uji Coba
       // for(i=0;i<c.bS;i++){
@@ -200,7 +201,7 @@ function Game(){
          return r;
       }
       //Step 2
-      if(gameHistory.length>4){
+      if(gameHistory.length>50){
         gameHistory.pop();         
       }
       gameHistory.unshift(JSON.stringify(gameData));
@@ -213,10 +214,12 @@ function Game(){
       gameMap[x][y]=gameData.turnValue[0]; 
       updateBlockMap(x,y);
       // console.log(gameMap[x][y]);
+      var isBonusActive=false;
       if(bomb){
          r.state=turnCounting(gameMap,'bomb',x,y);
 
          //Evaluasi jumlah bomb
+         isBonusActive=gameData.bonus.bomb.isActive;
          gameData.bonus.bomb.count--;
          gameData.bonus.bomb.isActive=false;
 
@@ -225,6 +228,7 @@ function Game(){
          r.state=turnCounting(gameMap,'mul',x,y);
 
          //evaluasi jumlah multipolar
+         isBonusActive=gameData.bonus.multipolar.isActive;
          gameData.bonus.multipolar.count--;
          gameData.bonus.multipolar.isActive=false;
 
@@ -233,9 +237,15 @@ function Game(){
       }
 
       //Step 4
-      r.score=countScore(r.state,  gameData.comboCount);
+      var result=countScore(r.state,  gameData.comboCount);
+      r.score=result.scoreTotal;
       gameData.score=gameData.score+r.score;
-      
+      //Tambah jumlah multipolar
+
+      //step 7
+      if(result.scoreCount>=c.bombMin && !isBonusActive ){ 
+         gameData.bonus.bomb.count++;         
+      }
       /*
       Step 5
       Jika pada giliran ini membuat score, maka dihitung sebagai combo
@@ -352,6 +362,10 @@ function Game(){
          }
       }
       bonus[bonusId].isActive=active;
+      if(active){
+         bonusId=='multipolar'?bonus.bomb.isActive=false:'';
+         bonusId=='bomb'?bonus.multipolar.isActive=false:'';
+      }
       return active;
    }
 
@@ -383,14 +397,12 @@ function Game(){
          }
          var x=parseInt(selected.split('.')[0]);
          var y=parseInt(selected.split('.')[1]);
-         if(map[x][y]==0){
             // map[x][y]=getRandomInt(20,55); //sesuai batas level
-            map[x][y]=getRandomInt(level*2-1,level*5+5); //sesuai batas level
-            updateBlockMap(x,y);
-            count++;
-         }
+         map[x][y]=getRandomInt(level*2-1,level*5+5); //sesuai batas level
+         updateBlockMap(x,y);
+         count++;
          iter++;
-         if(iter>1000){break;}
+         if(iter>1000){break;} //pengaaman
       }
 
 
@@ -399,10 +411,13 @@ function Game(){
     // Web Storage simply provides a key-value mapping, e.g. localStorage["name"] = username;. Unfortunately, present implementations only support string-to-string mappings, so you need to serialise and de-serialise other data structures. You can do so using JSON.stringify() and JSON.parse().
 
    function save(){
-      //update scores dulu. 
+      //update scores dulu.
+      console.time('turn');
+ 
       generateScores();
       localStorage.setItem(keyGameData,enc(JSON.stringify(gameData)));
       localStorage.setItem(keyGameHistory,enc(JSON.stringify(gameHistory)));
+      console.timeEnd('turn');
 
       // console.log('gennerate scores aktif');
    }
@@ -419,7 +434,8 @@ function Game(){
 
    /* Menghitung apakah game over atau tidak */
    function isGameOver(){
-      console.log(!(emptyBlockMap.length==0));
+      // console.log(!(emptyBlockMap.length==0));
+
       if(!(emptyBlockMap.length==0)){
          return false;
       }
@@ -431,13 +447,18 @@ function Game(){
       //    }
       // }
       //Hapus save game
-      localStorage.removeItem(keyGameHistory);
-      localStorage.removeItem(keyGameData);
-      gameHistory=[];
+      gameData.bonus.undo.count=0;     
+      clearStorage();
+
       return true;
 
    }
-
+   function clearStorage(){
+      localStorage.removeItem(keyGameHistory);
+      localStorage.removeItem(keyGameData);
+      gameHistory=[];
+      emptyBlockMap=[];
+   }
    /* Blok fungsi untuk melakukan perhitungan validator--------------------- */
    function aa(a,b,c){
       return a*b*c+(a-c*b);
@@ -506,7 +527,7 @@ function Game(){
          currentLevel=1;
          turnToGo=countLevel(currentLevel);
          turnCount=0;
-         turnCurrentLevel=0;
+         turnCurrentLevel=1;
          totalThisLevel=10;
 
       }
@@ -514,12 +535,12 @@ function Game(){
       remain=totalTurn-turnToGo;
 
       //Jika sisa == 0 maka level ditambah 1 dan direset.
-      if(remain==totalTurn){
+      if(remain==totalTurn-1){
          currentLevel=currentLevel+1;
          turnToGo=countLevel(currentLevel); //reset
          //Tambah jumlah undo
          gameData.bonus.undo.count++; //step 7
-         turnCurrentLevel=0;
+         turnCurrentLevel=1;
          totalThisLevel=turnToGo;
 
 
@@ -705,13 +726,10 @@ function Game(){
             }
          }
       }
-      //Tambah jumlah multipolar
-      if(scoreCount>=c.bombMin){ //step 7
-         gameData.bonus.bomb.count++;         
-      }
+
       // console.log('Score Count '+scoreCount);
 
-      return scoreTotal*gameData.level.current;
+      return {scoreTotal:scoreTotal*gameData.level.current,scoreCount:scoreCount};
    }
    function isSinglePolar(val1,val2){
       return isEven(val1)==isEven(val2)?true:false;
@@ -740,7 +758,9 @@ function Game(){
       return Math.floor(Math.random() * (max - min)) + min;
    }
    //Update variabel blockMap
-   //Command 1 =Push  command 2==pull
+   //block map berfungsi untuk memetakan kotak yang kosong
+   //digunakan untuk generate random angka dan deteksi game over
+   //dipanggil setiap ada perubahan di block
    function updateBlockMap(x,y){
       var value=x+'.'+y;
       // console.log(gameData.gameMap[x][y]);

@@ -1,167 +1,182 @@
-<div class="mn-header">
-	<div class="mn-header-score">
-		<p>Score</p>
-		<h3>15000</h3>
-		<div></div>
-		<p>Combo</p>
-		<h3>1<span>x</span></h3>
-	</div>
-	<div class="mn-header-main">
-		<div class="level-panel">
+<div ng-controller="Game">
+	<div class="mn-header">
+		<div class="mn-level-panel">
 			<div class="bar">
-				<p>Level 3</p>
-				<div style="width:50%;" class="bar-fill"></div>
-			</div>
-			<p>23 step to next level</p>
-		</div>
-		<div class="info-panel">
-			<div class="current-number">
-				<p>Current</p>
-				<div>5</div>
-			</div>
-			<div class="next-number">
-				<p>Next</p>
-				<div>
-					<span>5</span>
-					<span>8</span>
-					<span>1</span>
+				<div 
+					style="width:{{uiState.barSize}}" 
+					class="bar-fill {{uiState.barSizeAnimate}}"
+					ng-class="game.getGameData().level.toGo%2==0?'even':'odd'"
+					>
 				</div>
-			</div>
-
-			<div class="bonus-block">
-				<p>Power</p>
-				<div>
-					<span>
-						<img src="/image/icon.png" title="Multipolar Number">
-						<h4>5</h4>
-					</span>
-					<span>
-						<img src="/image/icon2.png" title="Undo">
-						<h4>5</h4>
-					</span>
-					<span class="active">
-						<img src="/image/icon3.png" title="Number Bomb">
-						<h4>5</h4>
-					</span>
-
-				</div>
+				<p>{{game.getGameData().level.toGo}} step to next level</p>
 			</div>
 		</div>
+		<div class="mn-header-score">
+			<div>
+				<p>Score</p>
+				<h3 animate-on-change='game.getGameData().score'>{{game.getGameData().score}}</h3>		
+			</div>
+			<div>
+				<p>Combo</p>
+				<h3 animate-on-change='game.getGameData().comboCount'>{{game.getGameData().comboCount}}<span>x</span></h3>
+			</div>
+			<div>
+				<p>Level</p>
+				<h3  animate-on-change='game.getGameData().level.current'>{{game.getGameData().level.current}}</h3>
+			</div>		
+		</div>
+		<div class="mn-header-main">
+			<div class="info-panel">
+				<div class="bonus-block">
+					<p>Power Up</p>
+					<div>
+						<span ng-click="multipolar()" title="Multipolar Number" ng-class=uiState.multipolar>
+							<img src="/image/icon.png" >
+							<h4>{{game.getGameData().bonus.multipolar.count}}</h4>
+						</span>
+						<span ng-click="bomb()" title="Number Bomb" ng-class=uiState.bomb>
+							<img src="/image/icon3.png" >
+							<h4>{{game.getGameData().bonus.bomb.count}}</h4>
+						</span>
+						<span ng-click="undo()" title="Undo" class="shake shake-hover">
+							<img src="/image/icon2.png"  >
+							<h4>{{game.getGameData().bonus.undo.count}}</h4>
+						</span>
+					</div>
+				</div>
+				<div class="current-number">
+					<p>Current</p>
+					<div ng-class="game.getGameData().turnValue[0]%2==0?'even':'odd'">{{game.getGameData().turnValue[0]}}</div>
+				</div>
+				<div class="next-number">
+					<p>Next</p>
+					<div>
+						<span 
+							ng-class="game.getGameData().turnValue[1]%2==0?'even':'odd'">
+							{{game.getGameData().turnValue[1]}}
+						</span>
+						<span 
+							ng-class="game.getGameData().turnValue[2]%2==0?'even':'odd'">
+							{{game.getGameData().turnValue[2]}}
+						</span>
+						<span 
+							ng-class="game.getGameData().turnValue[3]%2==0?'even':'odd'">
+							{{game.getGameData().turnValue[3]}}
+						</span>
+					</div>
+				</div>
 
+
+			</div>
+
+		</div>
 	</div>
-</div>
 
-<div class="mn-content">
-	<table>							
-		<tr>
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-		</tr>
-		<tr>
-			<td>150</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-		</tr>
-		<tr>
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-		</tr>
-		<tr>
-			<td>999</td>
-			<td>2</td>
-			<td>3</td>
-			<td>4</td>
-			<td>5</td>
-			<td>6</td>
-			<td>7</td>
-			<td>8</td>
-			<td>9</td>
-		</tr>
-	</table>
+	<div class="mn-content">
+		<table>							
+			<tr ng-repeat="i in game.getGameData().gameMap track by $index" ng-init="x=$index">
+				<td 
+					ng-repeat="j in i track by $index" 
+					ng-init="y=$index" 
+					ng-mouseOver=""
+					data-x={{x}};
+					data-y={{y}};
+					animate-board=j
+					ng-click="turn(x,y)">
+						<span ng-class="getOddEvenStyle(j)" class="number-reveal">{{j!=0?j:game.getGameData().turnValue[0]}}</span>
+				</td>
+			</tr>
+		</table>
+	<!-- 		<tr>
+				<td>150</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+			</tr>
+
+		</table> -->
+	</div>
+
 </div>

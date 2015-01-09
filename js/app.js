@@ -1,8 +1,9 @@
 'use strict';
 
 var reactiveNumber = angular.module('reactiveNumber', [
-  'reactiveController','ngRoute'
+  'reactiveController','ngRoute','ui.bootstrap','ngAnimate'
 ]);
+
 
 reactiveNumber.directive('backButton', function(){
     return {
@@ -17,6 +18,7 @@ reactiveNumber.directive('backButton', function(){
     }
 });
 
+
 reactiveNumber.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
@@ -24,10 +26,6 @@ reactiveNumber.config(['$routeProvider',
             templateUrl:'html/_high-score.html',
             controller:'HighScore'
         }).
-         when('/',{
-            templateUrl:'html/_home.html',
-            controller:'Home'
-        }).    
          when('/how-to',{
             templateUrl:'html/_how-to.html',
             controller:'HowTo'
@@ -41,8 +39,73 @@ reactiveNumber.config(['$routeProvider',
             controller:'About'
         }).                                                 
         otherwise({
-            redirectTo:'/'
+            redirectTo:'/game/continue'
         });
   }]);
 
+reactiveNumber.directive('animateOnChange',['$animate',function($animate){
+  return function(scope, elem, attr) {
+    console.log(attr.animateOnChange);
+      scope.$watch(attr.animateOnChange, function(nv,ov) {
+        if (nv!=ov) {
+          var c = 'change';
+          $animate.addClass(elem,c).then(function() {
+            $animate.removeClass(elem,c);
+            console.log('fallback');
+          });
+        }
+      });
+   };
+}]);
+
+reactiveNumber.directive('animateBoard',['$animate','$timeout', function($animate,$timeout) {
+  return function(scope, elem, attr) {
+      scope.$watch(attr.animateBoard, function(nv,ov) {
+        var classname='';
+        if(nv!=ov){
+          if(nv>ov){
+            classname='changeup';
+          }else{
+            classname='changedown';
+          }
+          if(nv==0){
+            classname='changezero';
+          }
+          if(ov==0 && nv!=0){
+            classname='changeadd';
+          }
+          console.log('From '+ov+' to '+nv+' '+classname+' '+attr.x+' '+attr.y+' '+scope.uiState.multipolar);
+
+          $animate.addClass(elem.children(),classname).then(function() {
+            $animate.removeClass(elem.children(),classname);
+          });
+
+        }
+      });
+   };
+}]);
+/*
+  ada dua, val dan pos
+*/
+reactiveNumber.directive('animateTurnValue',['$animate','$timeout', function($animate,$timeout) {
+  return function(scope, elem, attr) {
+      scope.$watch(attr.animateTurnValue.val, function(nv,ov) {
+        var pos=attr.animateTurnValue.pos;
+        if(pos==0){
+
+        }else if(pos==1){
+
+        }else{
+
+        }
+      });
+   };
+}]);
+
+reactiveNumber.config(['$animateProvider', 
+  function($animateProvider){
+  // restrict animation to elements with the bi-animate css class with a regexp.
+  $animateProvider.classNameFilter(/^((?!(bar-fill)).)*$/);
+
+}]);
 
