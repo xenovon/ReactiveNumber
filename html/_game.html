@@ -5,7 +5,7 @@
 				<div 
 					style="width:{{uiState.barSize}}" 
 					class="bar-fill {{uiState.barSizeAnimate}}"
-					ng-class="game.getGameData().level.toGo%2==0?'even':'odd'"
+					ng-class="'style-'+(game.getGameData().level.toGo%5+1)"
 					>
 				</div>
 				<p>{{game.getGameData().level.toGo}} step to next level</p>
@@ -14,15 +14,15 @@
 		<div class="mn-header-score">
 			<div>
 				<p>Score</p>
-				<h3 animate-on-change='game.getGameData().score'>{{game.getGameData().score}}</h3>		
+				<h3 animate-on-change='game.getGameData().score'>{{game.getGameData().score | number:0}}</h3>		
 			</div>
 			<div>
 				<p>Combo</p>
-				<h3 animate-on-change='game.getGameData().comboCount'>{{game.getGameData().comboCount}}<span>x</span></h3>
+				<h3 animate-on-change='game.getGameData().comboCount'>{{game.getGameData().comboCount | number:0}}<span>x</span></h3>
 			</div>
 			<div>
 				<p>Level</p>
-				<h3  animate-on-change='game.getGameData().level.current'>{{game.getGameData().level.current}}</h3>
+				<h3  animate-on-change='game.getGameData().level.current'>{{game.getGameData().level.current | number:0}}</h3>
 			</div>		
 		</div>
 		<div class="mn-header-main">
@@ -44,13 +44,17 @@
 						</span>
 					</div>
 				</div>
-				<div class="current-number">
+				<div class="current-number" ng-class="game.getGameData().turnValue[0]>999?'font-small':''">
 					<p>Current</p>
-					<div ng-class="game.getGameData().turnValue[0]%2==0?'even':'odd'">{{game.getGameData().turnValue[0]}}</div>
+					<div 
+						ng-class="game.getGameData().turnValue[0]%2==0?'even':'odd'"
+						class="{{uiState.currentTurn}}"
+					>
+					{{game.getGameData().turnValue[0]}}</div>
 				</div>
 				<div class="next-number">
 					<p>Next</p>
-					<div>
+					<div ng-class="game.getGameData().turnValue[3]>999?'font-small':''">
 						<span 
 							ng-class="game.getGameData().turnValue[1]%2==0?'even':'odd'">
 							{{game.getGameData().turnValue[1]}}
@@ -83,7 +87,10 @@
 					data-y={{y}};
 					animate-board=j
 					ng-click="turn(x,y)">
-						<span ng-class="getOddEvenStyle(j)" class="number-reveal">{{j!=0?j:game.getGameData().turnValue[0]}}</span>
+						<span ng-class="getOddEvenStyle(j)" 
+						     class="number-reveal {{uiState.blockClass}}">
+						     {{j!=0?j:game.getGameData().turnValue[0]}}
+						</span>
 				</td>
 			</tr>
 		</table>

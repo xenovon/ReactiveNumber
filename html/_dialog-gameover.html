@@ -1,0 +1,21 @@
+<div ng-controller="GameOver" class="dg">
+	<h3 class="dg-title">Game Over</h3>
+	<p>Don't Worry, You can get higher</p>	
+	<div class="dg-content">
+		<div class="dg-score">
+			<h4>Score</h4>
+			<h3>{{gameData.score}}</h3>
+		</div>
+		<div class="dg-score">
+			<h4>Level</h4>
+			<h3>{{gameData.level.current}}</h3>
+		</div>
+		<div class="dg-score">
+			<h4>Max Combo</h4>
+			<h3>{{maxCombo()}}</h3>
+		</div>
+	</div>
+	<div class="dg-action">
+		<button ng-click="newGame()" class="shake shake-constant hover-stop">Start New Game</button>
+	</div>
+</div>

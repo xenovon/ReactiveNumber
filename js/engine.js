@@ -99,7 +99,7 @@ function Game(){
    this.newGame=function(){
       gameHistory=[];
       emptyBlockMap=[];
-      
+
       gameData=new GameData();
       var map=gameData.gameMap;
       //inisialisasi
@@ -450,6 +450,16 @@ function Game(){
       gameData.bonus.undo.count=0;     
       clearStorage();
 
+      // var map=gameData.gameMap;
+      // //inisialisasi
+      // map=new Array(c.bS);
+      // for(i=0;i<c.bS;i++){
+      //       map[i]=new Array(c.bS);
+      //       for(j=0;j<c.bS;j++){
+      //          map[i][j]=0;
+      //    }
+      // }
+      // gameData.gameMap=map;
       return true;
 
    }
@@ -708,7 +718,6 @@ function Game(){
             }
          }
       }
-     
    }
 
    //Untuk menghitung jumlah score tiap giliran dan evaluasi bonus multiplier & bomb;

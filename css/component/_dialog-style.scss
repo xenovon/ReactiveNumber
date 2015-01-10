@@ -1,0 +1,36 @@
+.dg{
+	&-title{
+		font-size:35px;
+		color:#F45150;
+		text-align: center;
+	}
+	p{
+		text-align: center;
+		font-size: 11px;
+		margin-top: -10px;
+		color: #AEAEAE;
+	}
+	&-content{
+		padding: 20px;
+	}
+	&-score{
+		display:inline-block;
+		width: 30%;
+		text-align: center;
+		h3{
+			font-size: 35px;
+		}
+	}
+	&-action{
+		text-align: center;
+		button{
+			background-color: #37A7F2;
+			padding: 10px 10px;
+			display: inline-block;
+			margin: 5px 10px;
+			border: none;
+			font-size: 15px;
+			color: #fff;
+		}
+	}
+}

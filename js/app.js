@@ -1,7 +1,7 @@
 'use strict';
 
 var reactiveNumber = angular.module('reactiveNumber', [
-  'reactiveController','ngRoute','ui.bootstrap','ngAnimate'
+  'reactiveController','ngRoute','ngAnimate','ngDialog'
 ]);
 
 
@@ -74,13 +74,18 @@ reactiveNumber.directive('animateBoard',['$animate','$timeout', function($animat
           if(ov==0 && nv!=0){
             classname='changeadd';
           }
-          console.log('From '+ov+' to '+nv+' '+classname+' '+attr.x+' '+attr.y+' '+scope.uiState.multipolar);
-
+          // console.log('From '+ov+' to '+nv+' '+classname+' '+attr.x+' '+attr.y+' '+scope.uiState.multipolar);
+          // if(nv>999){
+          //   elem.children().addClass('font-small');
+          // }else{
+          //   elem.children().removeClass('font-small');
+          // }
           $animate.addClass(elem.children(),classname).then(function() {
             $animate.removeClass(elem.children(),classname);
           });
-
         }
+
+
       });
    };
 }]);

@@ -1,5 +1,6 @@
 
 @import "component/_animation.scss";
+@import "component/_dialog-style.scss";
 
 
 .main{
@@ -143,6 +144,7 @@ $background-mn:#F4F4F4;
 $border-mn:#e0e0e0;
 $board-border:#f3f3f3;
 $board-background:#e0e0e0;
+
 .mn{
 	background-color:$background-mn;
 	height:auto;
@@ -202,13 +204,21 @@ $board-background:#e0e0e0;
 			    -o-transition: none !important;
 			    transition: none !important;	    	
 		    }
-		    &.even{
+		    &.style-1{
 		    	@include even-style();
 		    }
-		    &.odd{
+		    &.style-2{
 		    	@include odd-style();
 		    }
-
+		    &.style-3{
+				background-color:#aa66cc;
+		    }
+		    &.style-4{
+				background-color:#ff4444;
+		    }
+		    &.style-5{
+				background-color:#ffbb33;
+		    }
 
 		}		
 	}	
@@ -216,6 +226,10 @@ $board-background:#e0e0e0;
 		margin: 0 auto;
 		text-align: center;
 		padding: 10px;
+		.img-logo{
+			width: 60%;
+			text-align: center;
+		}
 		&-score{
 			margin-right:20px;
 			display: block;
@@ -255,9 +269,17 @@ $board-background:#e0e0e0;
 					@include header-sub();
 
 				}
+				&.font-small{
+					div{
+						font-size:13px !important;
+						padding-top:8px !important;						
+					}
+				}
 				div{
 					@include number-block(#fff);
+
 					background: #F45150;
+					border-color:#fff;
 					&:hover{
 						background-color:#FC6160;
 					}
@@ -279,8 +301,15 @@ $board-background:#e0e0e0;
 				p{
 					@include header-sub();
 				}
+				div.font-small{
+					span{
+						font-size:13px !important;
+						padding-top:8px !important;						
+					}
+				}
 				div span{	
 					@include number-block(#2c3e50);
+
 					margin-right:-5px;
 					border:1px solid $board-border;
 					&.even{
@@ -311,7 +340,6 @@ $board-background:#e0e0e0;
 						position: relative;
 						padding: 5px 5px 0 0;
 						text-align: center;
-						border-radius: 5px;
 						border: 1px solid #CACACA;						
 
 						img{
@@ -327,8 +355,8 @@ $board-background:#e0e0e0;
 							right: 3px;
 						}
 						&:hover{
-							background-color:#37A7F2;
-							border-color:#37A7F2;
+							background-color:#aa66cc;
+							border-color:#aa66cc;
 							h4{
 								color:#fff;
 							}
@@ -347,6 +375,10 @@ $board-background:#e0e0e0;
 	}
 
 	&-content{
+		.text{
+			padding:20px;
+			font-size:12px;
+		}
 		margin:0 auto 20px auto;
 		table{
 			-moz-user-select: -moz-none;
@@ -374,33 +406,35 @@ $board-background:#e0e0e0;
 					}
 
 					span.changeup{
-						background-color: #F45150 !important;
+						// background-color: #F45150 !important;
 					}
 					span.changeup-add{
 					  // animation: bigger 0.6s;
 					  // -webkit-animation: bigger 0.6s;
-					    -webkit-transition: all 0.2s ease-out !important;
-					    -moz-transition: all 0.2s ease-out !important;
-					    -o-transition: all 0.2s ease-out !important;
-					    transition: all 0.2s ease-out !important;
+					    -webkit-transition: all 0.6s ease-in-out !important;
+					    -moz-transition: all 0.6s ease-in-out !important;
+					    -o-transition: all 0.6s ease-in-out !important;
+					    transition: all 0.6s ease-in-out !important;
+						background-color: #F45150 !important;
 
 					}
 					span.changeup-add-active {
-						background-color: #F45150 !important;
+						// background-color: #F45150 !important;
 					}
 					span.changedown {
-						background-color: #aa66cc !important;
+						// background-color: #aa66cc !important;
 					}
 					span.changedown-add{
-					    -webkit-transition: all 0.2s ease-out !important;
-					    -moz-transition: all 0.2s ease-out !important;
-					    -o-transition: all 0.2s ease-out !important;
-					    transition: all 0.2s ease-out !important;
+					    -webkit-transition: all 0.6s ease-in-out !important;
+					    -moz-transition: all 0.6s ease-in-out !important;
+					    -o-transition: all 0.6s ease-in-out !important;
+					    transition: all 0.6s ease-in-out !important;
+						background-color: #ffbb33 !important;
 
 					}
 
 					span.changedown-add-active {
-						background-color: #aa66cc !important;
+						// background-color: #aa66cc !important;
 					}
 					span.changezero-add{
 					 	animation: destroy 0.6s ease-in-out;
@@ -439,9 +473,30 @@ $board-background:#e0e0e0;
 								cursor:pointer;
 								@include odd-style();
 							}
+						}	
+						&.even-m{
+							@include even-style();
+							&:hover{
+								cursor:pointer;
+								@include even-style();
+							}
+						}
+						&.odd-m{
+							@include odd-style();
+							&:hover{
+								cursor:pointer;
+								@include odd-style();
+							}
+						}
+						&.gameOver{
+							background-color:#93938B !important;
+						}	
 
-						}					
 					}
+					.font-small{
+						font-size: 15px !important;
+						padding-top: 10px;
+					 }
 					.number-reveal{
 						font-size:20px;
 						font-weight: bold;
