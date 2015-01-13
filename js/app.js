@@ -74,12 +74,6 @@ reactiveNumber.directive('animateBoard',['$animate','$timeout', function($animat
           if(ov==0 && nv!=0){
             classname='changeadd';
           }
-          // console.log('From '+ov+' to '+nv+' '+classname+' '+attr.x+' '+attr.y+' '+scope.uiState.multipolar);
-          // if(nv>999){
-          //   elem.children().addClass('font-small');
-          // }else{
-          //   elem.children().removeClass('font-small');
-          // }
           $animate.addClass(elem.children(),classname).then(function() {
             $animate.removeClass(elem.children(),classname);
           });
@@ -92,20 +86,6 @@ reactiveNumber.directive('animateBoard',['$animate','$timeout', function($animat
 /*
   ada dua, val dan pos
 */
-reactiveNumber.directive('animateTurnValue',['$animate','$timeout', function($animate,$timeout) {
-  return function(scope, elem, attr) {
-      scope.$watch(attr.animateTurnValue.val, function(nv,ov) {
-        var pos=attr.animateTurnValue.pos;
-        if(pos==0){
-
-        }else if(pos==1){
-
-        }else{
-
-        }
-      });
-   };
-}]);
 
 reactiveNumber.config(['$animateProvider', 
   function($animateProvider){

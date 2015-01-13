@@ -809,31 +809,32 @@ function Game(){
    }
    function getMinValueTurn(){
       //rule 1 
-      /* 
-         var currLevel;
-         if(gameData.level.current>1){
-            currLevel=1;
-         }else{
-            currLevel=gameData.level.current;
-         }
-         return currLevel*2-1;
+       
+      var currLevel;
+      if(gameData.level.current<1){
+         currLevel=1;
+      }else{
+         currLevel=gameData.level.current;
+      }
+      return currLevel*2-1;
          
-      */
+      
       // aturan 2
-      return 1;
+      // return 1;
    }
    function getMaxValueTurn(){
       // rule 1
-      /*    var currLevel;
-         if(gameData.level.current>1){
-            currLevel=1;
-         }else{
-            currLevel=gameData.level.current;
-         }
-         return currLevel*2+5; */
+       var currLevel;
+      if(gameData.level.current<1){
+         currLevel=1;
+      }else{
+         currLevel=gameData.level.current;
+      }
+      return currLevel*5+5; 
        // rule 2
-      return 10;
+      // return 10;
    }
+
 
 }
 

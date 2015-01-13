@@ -2,6 +2,16 @@
    Reactive Number
    By : Adnan HP
 
+   TESTING A
+   -> Peningkatan Kesulitan berdasarkan rentang angka yang muncul lebih besar seiring peningkatan level. 
+   -> Jumlah yang popout tetap, yakni 1
+
+   Testing B
+   -> Peningkatan kesulitan berdasarkan jumlah yang popout
+   -> Rentang angka tetap
+
+   Testing C
+   -> Gabungan A dan B
    Rule 
    1. Game terdiri dari kotak 9x9
    2. Diawal permainan ada 10 kotak yang terisi angka, dengan posisi acak dan angka acak 1-10.
@@ -140,13 +150,13 @@ function Game(){
       var count=0;
       var level=gameData.level.current;
 
-      if(level<3) count=1;
-      if(level>=3 && level<7) count=2;
-      if(level>=7 && level<10) count=3;
-      if(level>=10) count=4;
+      // if(level<3) count=1;
+      // if(level>=3 && level<7) count=2;
+      // if(level>=7 && level<10) count=3;
+      // if(level>=10) count=4;
 
       console.log(count+' '+level);
-      popOut(count);
+      popOut(c.popCount);
       save();
    }
    /*Continue game*/
@@ -809,32 +819,31 @@ function Game(){
    }
    function getMinValueTurn(){
       //rule 1 
-      /* 
-         var currLevel;
-         if(gameData.level.current>1){
-            currLevel=1;
-         }else{
-            currLevel=gameData.level.current;
-         }
-         return currLevel*2-1;
+       
+      var currLevel;
+      if(gameData.level.current<1){
+         currLevel=1;
+      }else{
+         currLevel=gameData.level.current;
+      }
+      return currLevel*2-1;
          
-      */
+      
       // aturan 2
-      return 1;
+      // return 1;
    }
    function getMaxValueTurn(){
       // rule 1
-      /*    var currLevel;
-         if(gameData.level.current>1){
-            currLevel=1;
-         }else{
-            currLevel=gameData.level.current;
-         }
-         return currLevel*2+5; */
+      var currLevel;
+      if(gameData.level.current<1){
+         currLevel=1;
+      }else{
+         currLevel=gameData.level.current;
+      }
+      return currLevel*5+5; 
        // rule 2
-      return 10;
+      // return 10;
    }
-
 }
 
 /*fungsi untuk rule */

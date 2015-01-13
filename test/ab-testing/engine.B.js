@@ -830,7 +830,7 @@ function Game(){
          }else{
             currLevel=gameData.level.current;
          }
-         return currLevel*2+5; */
+         return currLevel*2-1; */
        // rule 2
       return 10;
    }

@@ -4,7 +4,6 @@
 
 
 .main{
-		
 	min-width:100%;
 	display:inline-block;
 	min-height:100%;
@@ -29,8 +28,14 @@
 	z-index: 2;
 	margin: 0 auto;
 	position: relative;
-
 }
+@media(max-width:709px){
+	.main-panel{
+		width: 100%;
+	}
+}
+
+
 
 .nb{
 	-moz-user-select: -moz-none;
@@ -71,12 +76,38 @@
 			}
 		}
 	}
+	&-menu2{
+		display: none;
+	}
 	&-logo{
 		display: inline-block;
 		margin-left:15px;
 		img{
 			width: 250px;
 		}
+	}
+}
+@media(max-width:670px){
+	.nb{
+		&-menu{
+			display:none;
+		}
+		&-menu2{
+			display: inline-block;
+		}
+	}
+}
+@media(max-width:500px){
+	.nb{
+		padding:5px;
+		height:50px;		
+		&-logo{
+			display: inline-block;
+			margin-left:15px;
+			img{
+				width: 160px;
+			}
+		}		
 	}
 }
 @mixin odd-style(){
@@ -97,12 +128,7 @@
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;	
 }
-.multipolar-hover{
-	// background-color:
-}
-.bomb-hover{
 
-}
 @mixin number-block($background-color){
 	// background-color:$background-color;
 	width: 35px;
@@ -144,6 +170,112 @@ $background-mn:#F4F4F4;
 $border-mn:#e0e0e0;
 $board-border:#f3f3f3;
 $board-background:#e0e0e0;
+$board-size:7;
+@media(max-width:400px){
+	.mn{
+		&-content{
+			margin:0 5px 20px 5px !important;
+			table{
+				width: 100%;
+				height: 100%;
+				tr{
+					width: auto;
+					td{					
+						width: 100%/$board-size !important;
+						height: auto; 
+					}
+				}
+			}
+		}
+		&-header{
+			&-main{
+				.info-panel{
+					margin-top:10px;
+				}
+				.current-number{
+					display: inline-block;
+					margin-left: 10px;
+					text-align: left;
+					// border:1px solid;
+					vertical-align: bottom;
+					p{
+						@include header-sub();
+
+					}
+					&.font-small{
+						div{
+							font-size:13px !important;
+							padding-top:8px !important;						
+						}
+					}
+					div{
+						@include number-block(#fff);
+
+						background: #F45150;
+						border-color:#fff;
+						&:hover{
+							background-color:#FC6160;
+						}
+						&.even{
+							@include even-style();
+						}
+						&.odd{
+							@include odd-style();
+						}
+					}
+
+				}
+				.next-number{
+					display: inline-block;
+					text-align: left;
+					// border:1px solid;
+					vertical-align: bottom;
+					margin-left: 10px;
+					p{
+						@include header-sub();
+					}
+					div.font-small{
+						span{
+							font-size:13px !important;
+							padding-top:8px !important;						
+						}
+					}
+					div span{	
+						@include number-block(#2c3e50);
+
+						margin-right:-5px;
+						border:1px solid $board-border;
+						&.even{
+							@include even-style();
+						}
+						&.odd{
+							@include odd-style();
+						}	
+					}
+
+				}
+				.bonus-block{
+					margin-right:10px !important;
+					div {
+						margin-top:5px !important;
+						span{
+							margin-right: 4px !important;
+							height: 35px !important;
+							width: 35px !important;
+							border: 1px solid #CACACA !important;
+							img{
+								width:15px !important;
+								height: 15px !important;
+								margin-top:1px !important;
+							}
+						}
+					}				
+				}
+			}
+		}
+
+	}	
+}
 
 .mn{
 	background-color:$background-mn;
@@ -459,7 +591,7 @@ $board-background:#e0e0e0;
 						width: 100%;
 						height: 100%;
 						margin: 0;
-						padding: 6px 0 0 0;
+						padding: 8px 0 0 0;
 						&.even{
 							@include even-style();
 							&:hover{
@@ -494,11 +626,11 @@ $board-background:#e0e0e0;
 
 					}
 					.font-small{
-						font-size: 15px !important;
-						padding-top: 10px;
+						font-size: 18px !important;
+						padding-top: 12px;
 					 }
 					.number-reveal{
-						font-size:20px;
+						font-size:24px;
 						font-weight: bold;
 						opacity: 1;
 						&.number-hide{
@@ -531,8 +663,10 @@ $board-background:#e0e0e0;
 					}					
 					text-align:center;
 					display:inline-block;
-					width:42px;
-					height:42px;
+					width: 52px;
+					height: 52px;
+					// width:42px;
+					// height:42px;
 					padding:0;
 					// padding-top:6px;
 					// margin-left: -2px;

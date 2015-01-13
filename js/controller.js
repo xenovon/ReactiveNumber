@@ -32,8 +32,8 @@ reactiveController.controller('GlobalCtrl', ['$scope', '$route','$location', fun
 
 }]);
 
-reactiveController.controller('Game',['$scope', '$routeParams','$location', '$animate','ngDialog',
-function($scope, $routeParams,$location,$animate, ngDialog) {
+reactiveController.controller('Game',['$scope', '$routeParams','$location', '$animate','ngDialog','$timeout',
+function($scope, $routeParams,$location,$animate, ngDialog, $timeout) {
 
 
      $scope.command=$routeParams.command;
@@ -50,34 +50,40 @@ function($scope, $routeParams,$location,$animate, ngDialog) {
 
      if($scope.command=='continue'){
           $scope.game.continueGame();
-          updateState();
+          updateState("continue");
      }
 
      if($scope.command=='new' && $scope.game.getGameData()==undefined){
           $scope.game.newGame();
-          updateState();
+          updateState("new");
      }
 
-     updateState();
+     updateState("Main");
      $scope.multipolar=function(){
           $scope.game.bonus('multipolar');
-          updateState();
+          updateState("multipolar");
      }
      $scope.undo=function(){
           $scope.game.undo(); 
-          updateState(); 		
+          updateState("undo"); 		
      }
      $scope.bomb=function(){
           $scope.game.bonus('bomb'); 		
-          updateState();
+          updateState("bomb");
      }  	
 
      $scope.turn=function(x,y){
-          $scope.game.turn(x,y);
-          updateState();
+          var r=$scope.game.turn(x,y);
+          if(r.error.length==0){
+               $timeout(function(){
+                    $scope.game.popOutTurn();
+                    updateState("turn");
+               },500);               
+          }
      }  	
 
-     function updateState(){
+     function updateState(caller){
+          console.log('caller'+caller);
           if($scope.game.getGameData()!=undefined){
                $scope.uiState.multipolar=$scope.game.getGameData().bonus.multipolar.isActive?'active shake shake-constant':'shake';
                $scope.uiState.bomb=$scope.game.getGameData().bonus.bomb.isActive?'active shake':'shake';
@@ -109,20 +115,21 @@ function($scope, $routeParams,$location,$animate, ngDialog) {
                }
 
                //tentuka jika mau game over, di wiggle wiggleken
-               if(emptyBlockMap.length==0){
+               if($scope.game.isGameOver()){
                     $scope.uiState.blockClass='gameOver';             
                     gameOverHandler();
-               }else if(emptyBlockMap.length==1){
-                    $scope.uiState.blockClass='shake shake-constant';             
-               }else if(emptyBlockMap.length<4){ //game over
+               }else if(emptyBlockMap.length<=4){
                     $scope.uiState.blockClass='shake shake-little shake-constant';
+               }else if(emptyBlockMap.length==1){ //game over
+                    $scope.uiState.blockClass='shake shake-little shake-constant';
+                    $scope.uiState.blockClass='shake shake-constant';             
                }else{
                     $scope.uiState.blockClass='';
                }
 
                //Dipanggil untuk multipolarismenya
                if($scope.game.getGameData().bonus.multipolar.isActive){
-                    $scope.uiState.blockClass+=$scope.game.getGameData().turnValue[0]%2==0?'even-m':'odd-m';
+                    $scope.uiState.blockClass+=$scope.game.getGameData().turnValue[0]%2==0?' even-m':' odd-m';
                }
                if($scope.game.getGameData().bonus.bomb.isActive){
                     $scope.uiState.blockClass+='shake shake-hover';
@@ -156,7 +163,7 @@ function($scope, $routeParams,$location,$animate, ngDialog) {
      }
 
      $scope.$on('updateState',function(event,e){
-          updateState();
+          updateState("broadcast");
      });
 
 }]);
