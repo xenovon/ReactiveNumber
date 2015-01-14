@@ -60,7 +60,7 @@ var c={'bS':7, //BoardSize
        'bombMin':5, //JUmlah minimal kotak ilang untuk bisa dapet bomb;
        'mulMin':6, //jumlah combo yang bisa dapet multipolar;
        'sKey':'nananabatman', //kunci untuk local storage dan enkripsi
-       'match':5, //variabel untuk ngacak kata
+       'match':589, //variabel untuk ngacak kata
        'popCount':1,//jumlah angka yang muncul entah darimana ketika turn
        'undoStart':2, //Jumlah undo awal
        'initCount':5//Jumlah angka random diawal.
@@ -140,10 +140,10 @@ function Game(){
       var count=0;
       var level=gameData.level.current;
 
-      if(level<3) count=1;
-      if(level>=3 && level<7) count=2;
-      if(level>=7 && level<10) count=3;
-      if(level>=10) count=4;
+      if(level<5) count=1;
+      if(level>=5 && level<10) count=2;
+      if(level>=10 && level<15) count=3;
+      if(level>=15) count=4;
 
       console.log(count+' '+level);
       popOut(count);
@@ -404,7 +404,8 @@ function Game(){
 
       //populasikan array
       while(!(count==popCount)){
-         var selected=gameData.emptyBlockMap[getRandomInt(0,gameData.emptyBlockMap.length)];
+         //perbaikan bug tambahin -1;
+         var selected=gameData.emptyBlockMap[getRandomInt(0,gameData.emptyBlockMap.length-1)];
          if(selected==undefined){
             break;
          }
@@ -809,30 +810,29 @@ function Game(){
    }
    function getMinValueTurn(){
       //rule 1 
-      /* 
-         var currLevel;
-         if(gameData.level.current>1){
-            currLevel=1;
-         }else{
-            currLevel=gameData.level.current;
-         }
-         return currLevel*2-1;
-         
-      */
+       
+      var currLevel;
+      if(gameData.level.current<1){
+         currLevel=1;
+      }else{
+         currLevel=gameData.level.current;
+      }
+      return currLevel*2-1;
+            
       // aturan 2
-      return 1;
+      // return 1;
    }
    function getMaxValueTurn(){
       // rule 1
-      /*    var currLevel;
-         if(gameData.level.current>1){
-            currLevel=1;
-         }else{
-            currLevel=gameData.level.current;
-         }
-         return currLevel*2+5; */
+      var currLevel;
+      if(gameData.level.current<1){
+         currLevel=1;
+      }else{
+         currLevel=gameData.level.current;
+      }
+      return currLevel*2+5; 
        // rule 2
-      return 10;
+      // return 10;
    }
 
 }

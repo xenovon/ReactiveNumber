@@ -58,6 +58,21 @@ reactiveNumber.directive('animateOnChange',['$animate',function($animate){
    };
 }]);
 
+reactiveNumber.directive('animateOnIncrease',['$animate',function($animate){
+  return function(scope, elem, attr) {
+    console.log(attr.animateOnChange);
+      scope.$watch(attr.animateOnChange, function(nv,ov) {
+        if (nv>ov) {
+          var c = 'change';
+          $animate.addClass(elem,c).then(function() {
+            $animate.removeClass(elem,c);
+            console.log('fallback');
+          });
+        }
+      });
+   };
+}]);
+
 reactiveNumber.directive('animateBoard',['$animate','$timeout', function($animate,$timeout) {
   return function(scope, elem, attr) {
       scope.$watch(attr.animateBoard, function(nv,ov) {

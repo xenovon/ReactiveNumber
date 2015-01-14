@@ -2,7 +2,9 @@
 @import "component/_animation.scss";
 @import "component/_dialog-style.scss";
 
-
+.container-fluid{
+	padding:0 !important;
+}
 .main{
 	min-width:100%;
 	display:inline-block;
@@ -33,6 +35,7 @@
 	.main-panel{
 		width: 100%;
 	}
+
 }
 
 
@@ -485,6 +488,13 @@ $board-size:7;
 							position:absolute;
 							top: -7px;
 							right: 3px;
+							&.change {
+								// background-color:red;
+							}
+							&.change-add{
+							  animation: zoomInBig 0.8s  ease-in-out;
+							  -webkit-animation: zoomInBig 0.8s  ease-in-out;
+							}
 						}
 						&:hover{
 							background-color:#aa66cc;
