@@ -58,9 +58,9 @@
 */
 var c={'bS':7, //BoardSize
        'bombMin':5, //JUmlah minimal kotak ilang untuk bisa dapet bomb;
-       'mulMin':6, //jumlah combo yang bisa dapet multipolar;
+       'mulMin':6, //jumlah kelipatan combo yang bisa dapet multipolar;
        'sKey':'nananabatman', //kunci untuk local storage dan enkripsi
-       'match':589, //variabel untuk ngacak kata
+       'match':5859, //variabel untuk ngacak kata
        'popCount':1,//jumlah angka yang muncul entah darimana ketika turn
        'undoStart':2, //Jumlah undo awal
        'initCount':5//Jumlah angka random diawal.
@@ -145,7 +145,7 @@ function Game(){
       if(level>=10 && level<15) count=3;
       if(level>=15) count=4;
 
-      console.log(count+' '+level);
+      // console.log(count+' '+level);
       popOut(count);
       save();
    }
@@ -266,7 +266,7 @@ function Game(){
 
       if(isCombo(r.state)){
          gameData.comboCount=combo+1;
-         if(gameData.comboCount==c.mulMin){ //step 7
+         if(gameData.comboCount%c.mulMin==0){ //step 7 kelipatan c.mulMin
             //Tambah jumlah Bomb
             gameData.bonus.multipolar.count++; 
          }
@@ -297,10 +297,9 @@ function Game(){
       */
       save();
 
-
       r.isGameOver=this.isGameOver();
       // console.log(JSON.stringify(emptyBlockMap)+' '+r.isGameOver);
-      console.log('kotak kosong '+gameData.emptyBlockMap.length)
+      // console.log('kotak kosong '+gameData.emptyBlockMap.length)
       console.timeEnd('turn');
       
       return r;
@@ -426,18 +425,17 @@ function Game(){
 
    function save(){
       //update scores dulu.
-      console.time('turn');
+      // console.time('turn');
  
       generateScores();
       localStorage.setItem(keyGameData,enc(JSON.stringify(gameData)));
       localStorage.setItem(keyGameHistory,enc(JSON.stringify(gameHistory)));
-      console.log("saved")
-      console.timeEnd('turn');
+      // console.log("saved")
+      // console.timeEnd('turn');
 
       // console.log('gennerate scores aktif');
    }
    function enc(uncoded) {
-       var key = 100; //Any integer value
        var result = "";
        var key=c.match;
        for(i=0; i<uncoded.length;i++)
@@ -483,7 +481,7 @@ function Game(){
       localStorage.removeItem(keyGameData);
       delete localStorage[keyGameData];
       delete localStorage[keyGameHistory];
-      console.log('deleted');
+      // console.log('deleted');
       gameHistory=[];
 
    }
@@ -803,10 +801,10 @@ function Game(){
                  break;       
              }
          }
-            console.log(JSON.stringify(value));                           
+            // console.log(JSON.stringify(value));                           
       }
       // this.isGameOver();
-      console.log(JSON.stringify(emptyBlockMap));
+      // console.log(JSON.stringify(emptyBlockMap));
    }
    function getMinValueTurn(){
       //rule 1 

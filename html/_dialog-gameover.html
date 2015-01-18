@@ -1,21 +1,62 @@
 <div ng-controller="GameOver" class="dg">
 	<h3 class="dg-title">Game Over</h3>
-	<p>Don't Worry, You can get higher</p>	
+	<p>{{getMotivationalText()}}</p>	
 	<div class="dg-content">
-		<div class="dg-score">
+		<div class="dg-main-score">
 			<h4>Score</h4>
 			<h3>{{gameData.score | number}}</h3>
 		</div>
-		<div class="dg-score">
-			<h4>Level</h4>
-			<h3>{{gameData.level.current}}</h3>
+		<div class="dg-box">
+			<div class="dg-score">
+				<h4>Level</h4>
+				<h3>{{gameData.level.current}}</h3>
+			</div>
+			<div class="dg-score">
+				<h4>Max Combo</h4>
+				<h3>{{maxCombo()}}</h3>
+			</div>
+			<div class="dg-score">
+				<h4>Total Turn</h4>
+				<h3>{{gameData.turn.turnCount}}</h3>
+			</div>
 		</div>
-		<div class="dg-score">
-			<h4>Max Combo</h4>
-			<h3>{{maxCombo()}}</h3>
+
+		<div class="share">
+			<!-- <h5>Share Your Score</h5> -->
+		</div>
+<!-- 		<div class="save-score">
+			<h5>Save Score</h5>
+			<p><span>Your Name</span><input type="text" name="name"> <a href="#submit">Save</a></p>
+		</div>
+ -->	<div class="your-high-score">
+			<h4>Your Highscore</h4>
+			<h5 ng-if="!haveHighScore">No Highscore yet</h5>
+			<div class="dg-highscore" ng-if="haveHighScore">
+				<div class="dg-main-score main-score">
+					<h4>Score</h4>
+					<h3>{{highScore_score | number}}</h3>
+					<p>{{highScore_date | date:'medium'}}</p>
+				</div>
+				<div class="dg-box">
+					<div class="dg-score score">
+						<h4>Level</h4>
+						<h3>{{highScore_level}}</h3>
+					</div>
+					<div class="dg-score score">
+						<h4>Max Combo</h4>
+						<h3>{{highScore_maxCombo}}</h3>
+					</div>
+					<div class="dg-score score">
+						<h4>Total Turn</h4>
+						<h3>{{highScore_turn}}</h3>
+					</div>
+				</div>
+			</div>
+							
+			<a href="#/high-score" ng-click="closeThisDialog()">Show All Score</a>
 		</div>
 	</div>
 	<div class="dg-action">
-		<button ng-click="newGame()" class="shake shake-constant hover-stop">Start New Game</button>
+		<button ng-click="newGame()" class="shake shake-little shake-constant hover-stop">Start New Game</button>
 	</div>
 </div>

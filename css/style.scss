@@ -1,9 +1,18 @@
 
 @import "component/_animation.scss";
 @import "component/_dialog-style.scss";
+@import "component/_responsive-menu.scss";
+@import "component/_highscore.scss";
 
 .container-fluid{
 	padding:0 !important;
+}
+.social-button{
+	text-align:center;
+	margin-top:-70px;
+	div{
+		vertical-align: top;
+	}
 }
 .main{
 	min-width:100%;
@@ -95,18 +104,16 @@
 		&-menu{
 			display:none;
 		}
-		&-menu2{
-			display: inline-block;
-		}
 	}
 }
 @media(max-width:500px){
 	.nb{
 		padding:5px;
-		height:50px;		
+		height:50px;
 		&-logo{
 			display: inline-block;
 			margin-left:15px;
+			margin-top:3px;
 			img{
 				width: 160px;
 			}
@@ -157,7 +164,7 @@
 
 .footer{
 	text-align:center;
-	margin:-20px 0 20px 0;
+	margin:30px 0 20px 0;
 	p{
 		font-size:12px;
 		color:#f1f1f1;
@@ -362,7 +369,7 @@ $board-size:7;
 		text-align: center;
 		padding: 10px;
 		.img-logo{
-			width: 60%;
+			width: 50%;
 			text-align: center;
 		}
 		&-score{
@@ -517,9 +524,30 @@ $board-size:7;
 	}
 
 	&-content{
+		min-height: 400px;
 		.text{
 			padding:20px;
 			font-size:12px;
+			.version{
+				font-size: 11px;
+				color: #999;
+				margin-top: -7px;
+				margin-bottom: 20px;
+			}
+			.copyright{
+				font-size: 11px;
+				margin-top: -20px;
+				margin-bottom: 20px;
+			}
+			.title{
+				font-size: 11px;
+				margin-top: -8px;
+			}
+			.question{
+				font-size: 11px;
+				margin-top: -25px;
+				margin-bottom: 20px;
+			}
 		}
 		margin:0 auto 20px auto;
 		table{

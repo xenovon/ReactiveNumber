@@ -1,6 +1,79 @@
 <div class="mn-header">
-	<h1>High Score</h1>
+	<h1>Score</h1>
 </div>
 <div class="mn-content">
-	<p>content</p>
+	<div class="text">
+		<div ng-if="!isHaveScore" class="text-no-score">Whoah, No Scores Yet! Play this game first...<br/> and get your best scores</div>
+		<div  ng-if="isHaveScore" class="text-score">
+			<div class="text-yourhigh">
+				<h4>Your Highscore</h4>
+				<div class="dg-main-score">
+					<h4>Score</h4>
+					<h3>{{highscore.score | number}}</h3>
+					<p>{{highscore.date | date:'medium'}}</p>
+
+				</div>
+				<div class="dg-box">
+					<div class="dg-score">
+						<h4>Level</h4>
+						<h3>{{highscore.level}}</h3>
+					</div>
+					<div class="dg-score">
+						<h4>Max Combo</h4>
+						<h3>{{highscore.max_combo}}</h3>
+					</div>
+					<div class="dg-score">
+						<h4>Total Turn</h4>
+						<h3>{{highscore.turn}}</h3>
+					</div>
+				</div>
+
+				<div class="share">
+					<!-- <h5>Share Your Score</h5> -->
+				</div>
+			</div>
+
+			<div class="text-allscore">
+				<h4>All Score</h4>
+				<table>
+					<thead>
+						<tr>
+							<td>No</td>
+							<td><a href="" ng-click="sort('date')">Date</a></td>
+							<td><a href="" ng-click="sort('score')">Score</a></td>
+							<td><a href="" ng-click="sort('level')">Level</a></td>
+							<td><a href="" ng-click="sort('max_combo')">Max Combo</a></td>
+							<td><a href="" ng-click="sort('turn')">Total Turn</a></td>
+						</tr>
+					</thead>
+					<tr ng-repeat="i in scoreList track by $index">
+						<td>{{($index+1)*page}}</td>
+						<td>{{i.date | date:'medium'}}</td>
+						<td>{{i.score}}</td>
+						<td>{{i.level}}</td>
+						<td>{{i.max_combo}}</td>
+						<td>{{i.turn}}</td>
+					</tr>
+				</table>
+
+			</div>
+			<nav>
+			  <ul class="pagination">
+			    <li>
+			      <a href="" ng-click="prev()" aria-label="Previous">
+			        <span>Prev</span>
+			      </a>
+			    </li>
+			    <li>{{page}} of {{pageCount}}</li>
+			    <li>
+			      <a class="next" ng-click="next()" href="" aria-label="Next">
+			        <span>Next</span>
+			      </a>
+			    </li>
+			  </ul>
+			</nav>
+
+
+		</div>
+	</div>
 </div>

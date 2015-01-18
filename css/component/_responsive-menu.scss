@@ -1,0 +1,93 @@
+.resp-menu{
+	display:none;
+	ul{
+		right:0;
+		background:#fff;
+		list-style: none;
+		padding:0;
+		width: 180px;
+		border-top: 0; 
+		border-right: 0;
+		border-bottom: 2px solid;
+		border-left: 2px solid;
+		border-color: #E4E4E4;
+		display: block;
+		height: 215px;
+	    transition: all  0.3s ease-in-out;
+		position: inherit;
+		overflow: hidden;
+		li{
+			a{
+				padding: 10px 10px 10px 30px;
+				display: block;
+				width: 100%;
+				border-top: 1px solid #EAEAEA;
+				border-bottom: 1px solid #F9F9F9;
+				text-decoration: none;
+				&:hover{
+					background: #37A7F2;
+					cursor: pointer;
+					text-decoration: none;
+					color: #fff;
+					border-top:none;
+					border-bottom:none;
+				}
+			}
+			&:first-child{
+				a{
+					border-top:none;
+				}
+			}
+			&:last-child{
+				a{
+					border-bottom:none;
+				}
+			}
+		}
+		&.ng-hide{
+			height:0;
+		}
+		// &.ng-hide-add-active{
+		// 	height:0;
+		// }		
+	
+	}
+}
+
+.menu-button{
+	font-size:35px;
+	color:#fff;
+	width:50px;
+	height:50px;
+	padding:5px;
+	margin-bottom:18px;
+	background:none;
+	box-shadow:none;
+	border:0;
+	margin-left:100px;
+	margin-right:15px;
+	&:hover,&:active,&:focus{
+		color:#FFFF19;
+		border: none;
+	}
+}
+@media(max-width:670px){
+	.resp-menu{
+		display: inline-block;
+		position: absolute;
+		right: 0px;
+		z-index: 1000;
+	}
+}
+
+@media(max-width:500px){
+	.menu-button{
+		font-size: 30px;
+		width: 40px;
+		height: 40px;
+		margin-bottom: 10px;
+		margin-top: -5px;
+		margin-left:100px;
+	}
+
+}

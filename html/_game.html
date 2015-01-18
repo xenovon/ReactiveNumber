@@ -53,7 +53,7 @@
 					{{game.getGameData().turnValue[0]}}</div>
 				</div>
 				<div class="next-number">
-					<p>Next</p>
+					<p ng-click="openDialog()">Next</p>
 					<div ng-class="game.getGameData().turnValue[3]>999?'font-small':''">
 						<span 
 							ng-class="game.getGameData().turnValue[1]%2==0?'even':'odd'">

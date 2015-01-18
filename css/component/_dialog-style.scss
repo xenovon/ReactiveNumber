@@ -10,15 +10,97 @@
 		margin-top: -10px;
 		color: #AEAEAE;
 	}
-	&-content{
-		padding: 20px;
+	&-highscore{
+		.main-score{
+			h3{
+				font-size: 25px;
+			}
+			h4{
+				font-size: 15px;
+			}
+		}
+		.score{
+			h3{
+				font-size: 13px;
+				display: inline-block;
+				margin: 0;
+			}
+			h4{
+				font-size: 13px;
+				display: inline-block;
+			}			
+		}
 	}
-	&-score{
-		display:inline-block;
-		width: 30%;
+	&-content{
+		padding: 10px;
+		.save-score{
+			p{
+				font-size:12px;
+				color: #5E5E5E;
+				margin:10px 0 20px 0;
+				text-align: left;
+				span{
+					display: inline-block;
+					vertical-align: middle;
+					margin-top: 3px;
+					margin-right: 20px;
+				}
+				input{
+					height: 25px;
+					padding: 4px;
+					vertical-align: top;
+					margin-top: 2px;				}
+				a{
+					padding: 2px 20px;
+					background-color: #9E33F4;
+					color: #fff;
+					vertical-align: top;
+					display: inline-block;
+					height: 25px;
+					margin-top: 2px;
+					text-decoration:none;
+					&:hover{
+						text-decoration: none;
+						background-color:#BF75FA;
+
+					}
+				}
+			}
+		}
+
+
+	}
+	&-main-score{
+		display: inline-block;
+		width: 40%;
 		text-align: center;
 		h3{
 			font-size: 35px;
+		}
+		h4{
+			font-size: 20px;
+		}
+	}
+	&-box{
+		display: inline-block;
+		width: 50%;
+		text-align: right;
+		margin-left: 10px;
+	}
+	&-score{
+		display: inline-block;
+		width: 100%;
+		text-align: left;
+		h3{
+			font-size: 15px;
+			display: inline-block;
+			margin: 0;
+		}
+		h4{
+			font-size: 15px;
+			display: inline-block;
+			margin: 5px;
+			width: 60%;			
 		}
 	}
 	&-action{
@@ -34,3 +116,13 @@
 		}
 	}
 }
+.your-high-score{
+	margin-top:40px;
+}
+.your-high-score>h4{
+	text-align:center;
+}
+
+.ngdialog.ngdialog-theme-default {
+padding-bottom: 160px;
+padding-top: 80px !important;
