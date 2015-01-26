@@ -102,7 +102,7 @@ function($scope, $routeParams,$location,$animate, ngDialog, $timeout) {
      }  	
 
      function updateState(caller){
-          console.log('caller'+caller);
+          // console.log('caller'+caller);
           $scope.$emit('hideMenu');
           if($scope.game.getGameData()!=undefined){
                $scope.uiState.multipolar=$scope.game.getGameData().bonus.multipolar.isActive?'active shake shake-constant':'shake';
@@ -224,7 +224,7 @@ reactiveController.controller('HighScore',['$scope','scoreService', function($sc
           if(sort==$scope.sortBy){
                $scope.isDesc=!$scope.isDesc;
           }
-          console.log(sort+' '+$scope.sortBy);
+          // console.log(sort+' '+$scope.sortBy);
           $scope.setList(sort,$scope.page);
 
      }
@@ -253,6 +253,18 @@ reactiveController.controller('Home',['$scope', function($scope){
 
 }]);
 reactiveController.controller('HowTo',['$scope','$http', function($scope, $http){
+     var jsonData;
+     $scope.content;
+     $http.get('js/how-to-play.json').success(function(data) {
+         jsonData = data;
+         $scope.content=jsonData['en'];
+         console.log(JSON.stringify(jsonData));
+          console.log($scope.content);
+    });
+     $scope.changeLang=function(lang){
+         $scope.content=jsonData[lang];
+         console.log($scope.content);
+     }
 
 }]);
 
@@ -260,7 +272,7 @@ reactiveController.controller('GameOver',['$scope','scoreService', function($sco
 
      $scope.gameData=$scope.$parent.$parent.game.getGameData();
 
-     console.log($scope.gameData);
+     // console.log($scope.gameData);
      $scope.newGame=function(){
           $scope.$emit('newGame');
           $scope.closeThisDialog();
@@ -273,7 +285,7 @@ reactiveController.controller('GameOver',['$scope','scoreService', function($sco
           fillHighScore();
 
           if(isHighScore()){
-               console.log('HighScore');
+               // console.log('HighScore');
                return "New Highscore, Stunning!"
           }
           if(score<1000){

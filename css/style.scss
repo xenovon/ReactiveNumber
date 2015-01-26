@@ -9,9 +9,14 @@
 }
 .social-button{
 	text-align:center;
-	margin-top:-70px;
+	margin-top:-88px;
 	div{
 		vertical-align: top;
+	}
+	p{
+		font-size: 11px;
+		color:#444;
+		margin-bottom: 4px;
 	}
 }
 .main{
@@ -525,7 +530,16 @@ $board-size:7;
 
 	&-content{
 		min-height: 400px;
+		.lang{
+			margin:20px;
+			text-align: right;	
+		}
 		.text{
+			-moz-user-select: -moz-auto;
+		    -khtml-user-select: auto;
+		    -webkit-user-select: auto;
+		    -o-user-select: auto;
+
 			padding:20px;
 			font-size:12px;
 			.version{
@@ -547,6 +561,24 @@ $board-size:7;
 				font-size: 11px;
 				margin-top: -25px;
 				margin-bottom: 20px;
+			}
+
+			ul{
+				text-decoration: none;
+				list-style: none;
+				li{
+					img{
+						height: 35px;
+						margin:5px 10px 5px 0;
+					}
+				}
+			}
+			.tab{
+				margin-left: 24px;
+
+			}
+			.tab2{
+				margin-left: 40px;
 			}
 		}
 		margin:0 auto 20px auto;

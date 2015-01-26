@@ -3,5 +3,41 @@
 </div>
 
 <div class="mn-content">
-	<p>content</p>
+	<div class="lang">Language : <a href="" ng-click="changeLang('en')">en</a> |<a href="" ng-click="changeLang('id')">&nbsp;id</a></div>
+	<div ng-bind-html=content></div>
+	<div class="text">
+		<p>Reactive Number merupakan permainan puzzle strategi, menggunakan kemampuan  analisis angka dan matematika sederhana dalam menentukan langkah permainan. <b>Tujuan utama dari game adalah capai score setinggi mungkin sebelum permainan berakhir.</b></p>
+		<h3>Aturan</h3>
+		<p>Aturannya sederhana, pada setiap giliran, tempatkan angka di salah satu kotak kosong di papan berukuran 7x7. Angka tersebut akan mempengaruhi angka-angka disekitarnya, bereaksi satu sama lain. </p>
+		<p>Jika sama-sama genap atau ganjil, angka akan dikurangkan dan hilang jika setelah dikurangi lebih kecil dari 0. Jika berbeda ganjil dan genap, maka angka akan ditambahkan. </p>
+		<p> <b>Capai score setinggi mungkin dengan memaksimalkan angka yang berkurang dan meminimalkan angka yang bertambah.</b></p>
+		<p>Beberapa yang perlu diketahui.</p>
+		<ul>
+			<li><img src="image/even.png"> Angka Genap ditandai dengan warna hijau </li>
+			<li><img src="image/odd.png"> Angka Ganjil ditandai dengan warna biru </li>
+			<li><img src="image/decrease.png"> Angka akan memerah jika bertambah.</li>
+			<li><img src="image/increase.png"> Angka akan menguning jika berkurang</li>
+		</ul>
+		<p class="tab"><img src="image/next-current.png"></p><p class="tab2">Tiap giliran, angka baru akan muncul dengan posisi dan nilai angka yang acak. Makin tinggi level, jumlah angka yang muncul akan makin banyak. </p>
+		<p class="tab2"><b>Permainan selesai jika semua kotak penuh.</b></p>
+		<p class="tab2">Makin tinggi level, makin tinggi scorenya, namun tingkat kesulitannya juga makin tinggi.</p>
+		<h3>Power Up</h3>
+		Ada 3 bonus yang tersedia. 
+			<ul>
+				<li>
+					<h5><img src="image/multipolar.png"> <b>Multipolar</b></h5>
+					<p>Membuat angka lebih reaktif. Baik angka ganjil maupun genap, akan berkurang dengan multipolar. Raih 6 kali combo untuk mendapatkan multipolar.</p>
+				</li>
+				<li>
+					<h5><img src="image/bomb.png"> <b>Bomb</b></h5>
+					<p>Membuat angka menjadi bomb, angka sekitarnya akan langsung menghilang. Bomb didapat dengan cara menghilangkan 5 angka sekaligus dalam 1 giliran.</p>
+				</li>
+				<li>
+					<h5><img src="image/undo.png"> <b>Undo</b></h5>
+					<p>Mengembalikan ke posisi angka sebelumya. Undo bertambah setiap penambahan level.</p>
+				</li>
+			</ul>	
+	</div>
+	<h1></h1>
+
 </div>

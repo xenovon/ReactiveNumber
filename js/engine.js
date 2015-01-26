@@ -191,7 +191,7 @@ function Game(){
       Step 9: Simpan history dan save ke local storage
    */
    this.turn=function(x,y){
-      console.time('turn');
+      // console.time('turn');
       var r={'error':[],
              'state':'',
              'score':0,
@@ -300,7 +300,7 @@ function Game(){
       r.isGameOver=this.isGameOver();
       // console.log(JSON.stringify(emptyBlockMap)+' '+r.isGameOver);
       // console.log('kotak kosong '+gameData.emptyBlockMap.length)
-      console.timeEnd('turn');
+      // console.timeEnd('turn');
       
       return r;
    }
@@ -753,8 +753,8 @@ function Game(){
       }
 
       // console.log('Score Count '+scoreCount);
-
-      return {scoreTotal:scoreTotal*gameData.level.current,scoreCount:scoreCount};
+      var scoreMultiplier=gameData.level.current==0?1:gameData.level.current;
+      return {scoreTotal:scoreTotal*scoreMultiplier,scoreCount:scoreCount};
    }
    function isSinglePolar(val1,val2){
       return isEven(val1)==isEven(val2)?true:false;

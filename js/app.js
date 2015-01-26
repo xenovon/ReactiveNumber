@@ -45,13 +45,13 @@ reactiveNumber.config(['$routeProvider',
 
 reactiveNumber.directive('animateOnChange',['$animate',function($animate){
   return function(scope, elem, attr) {
-    console.log(attr.animateOnChange);
+    // console.log(attr.animateOnChange);
       scope.$watch(attr.animateOnChange, function(nv,ov) {
         if (nv!=ov) {
           var c = 'change';
           $animate.addClass(elem,c).then(function() {
             $animate.removeClass(elem,c);
-            console.log('fallback');
+            // console.log('fallback');
           });
         }
       });
@@ -60,13 +60,13 @@ reactiveNumber.directive('animateOnChange',['$animate',function($animate){
 
 reactiveNumber.directive('animateOnIncrease',['$animate',function($animate){
   return function(scope, elem, attr) {
-    console.log(attr.animateOnChange);
+    // console.log(attr.animateOnChange);
       scope.$watch(attr.animateOnChange, function(nv,ov) {
         if (nv>ov) {
           var c = 'change';
           $animate.addClass(elem,c).then(function() {
             $animate.removeClass(elem,c);
-            console.log('fallback');
+            // console.log('fallback');
           });
         }
       });
@@ -151,7 +151,7 @@ reactiveNumber.service('scoreService',function(){
     }
     scoreData.sort(dynamicSort(sortBy));
     scoreData=scoreData.slice((page-1)*itemPerPage,(page-1)*itemPerPage+20);
-    console.log('Length ' +scoreData.length);
+    // console.log('Length ' +scoreData.length);
     return scoreData;
   }
   function getArray(){
@@ -186,7 +186,7 @@ reactiveNumber.service('scoreService',function(){
   function enc(uncoded) {
      var result = "";
      var key=c.match;
-     console.log(key +' Key');
+     // console.log(key +' Key');
      for(i=0; i<uncoded.length;i++)
      {
          result += String.fromCharCode(key^uncoded.charCodeAt(i));
@@ -203,3 +203,17 @@ reactiveNumber.config(['$animateProvider',
 
 }]);
 
+reactiveNumber.run(['$rootScope',function($rootScope) {
+  $rootScope.$on('$routeChangeStart', function() {
+    console.log('progress start');
+  });
+
+  $rootScope.$on('$routeChangeSuccess', function() {
+    console.log('progress complete');
+  });
+
+  $rootScope.$on('$routeChangeError', function() {
+    console.log('progress error');
+  });  
+  // Do the same with $routeChangeError
+}]);
