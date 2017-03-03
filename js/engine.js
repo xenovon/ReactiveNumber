@@ -381,18 +381,18 @@ function Game(){
       return active;
    }
 
-   /*-------------- Private Method-------------- */
-   //Untuk memastikan angka random yang udah muncul, ngga muncul lagi
-   function isDuplicate(x,y,array){
-      var search=x+''+y;
-      var i = a.length;
-      while (i--) {
-         if (a[i] === obj) {
-            return true;
-         }
-      }
-      return false;
-   }
+   // /*-------------- Private Method-------------- */
+   // //Untuk memastikan angka random yang udah muncul, ngga muncul lagi
+   // function isDuplicate(x,y,array){
+   //    var search=x+''+y;
+   //    var i = a.length;
+   //    while (i--) {
+   //       if (a[i] === obj) {
+   //          return true;
+   //       }
+   //    }
+   //    return false;
+   // }
    //Untuk menghasilkan angka acak berbatas pada lokasi acak di board
    function popOut(popCount){
       var count=0;

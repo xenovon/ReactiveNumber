@@ -5,28 +5,50 @@
 <div class="mn-content">
 	<div class="lang">Language : <a href="" ng-click="changeLang('en')">en</a> |<a href="" ng-click="changeLang('id')">&nbsp;id</a></div>
 	<div ng-bind-html=content></div>
-	<div class="text">
-		<p>Reactive Number merupakan permainan puzzle strategi, menggunakan kemampuan  analisis angka dan matematika sederhana dalam menentukan langkah permainan. <b>Tujuan utama dari game adalah capai score setinggi mungkin sebelum permainan berakhir.</b></p>
-		<h3>Aturan</h3>
-		<p>Aturannya sederhana, pada setiap giliran, tempatkan angka di salah satu kotak kosong di papan berukuran 7x7. Angka tersebut akan mempengaruhi angka-angka disekitarnya, bereaksi satu sama lain. </p>
-		<p>Jika sama-sama genap atau ganjil, angka akan dikurangkan dan hilang jika setelah dikurangi lebih kecil dari 0. Jika berbeda ganjil dan genap, maka angka akan ditambahkan. </p>
-		<p> <b>Capai score setinggi mungkin dengan memaksimalkan angka yang berkurang dan meminimalkan angka yang bertambah.</b></p>
-		<p>Beberapa yang perlu diketahui.</p>
+	<div class="text"ng-class="langId">
+		<p>Reactive Number merupakan game puzzle strategi yang mengasah kemampuan analisis kamu.</p>
+		<p>Dalam game ini kamu akan menggunakan matematika sederhana untuk menambah skor. Kamu harus mengumpulkan skor sebanyak mungkin sebelum seluruh kotak terisi penuh.</p>
+
+
+		<h3>Cara Bermain</h3>
+		<p>Pada setiap giliran, tempatkan kotak yang berisi angka di kotak kosong pada papan arena permainan. Angka dalam kotak dapat menambah mengurangi angka-angka lain di sekitarnya.</p>
+
+		<p>Jika kotak dalam angka yang akan kamu tempatkan genap dan angka di sekitar papan arena genap, angka di papan akan dikurangi dengan angka di kotak yang kamu punya. Hal yang sama berlaku jika angka yang kamu punya adalah ganjil dan angka di papan ganjil. </p>
+
+		<p>Jika angka yang kamu punya genap dan angka di papan ganjil (atau sebaliknya), maka angka di papan akan ditambahkan dengan angka kamu.</p>
+
+		<p>Skor kamu akan bertambah saat ada angka yang berkurang di setiap giliran permainan.Kumpulkan skor sebanyak mungkin. </p>
+
+		<p><b>Coba deh lihat ilustrasinya :</b></p>
+		<img class="responsive" src="image/help-image-sm.png">
+		<ol>
+			<li>Angka yang kamu punya adalah 9.</li>
+			<li>Tempatkan angka kamu ke blok kosong.</li>
+			<li>Angka sekitarnya (ditandai dengan kotak pink) akan berubah jumlahnya. Angka 9 (biru) akan mengurangi angka di blok yang juga berwarna biru, dan menambahkan angka di blok hijau.</li>
+		</ol>  
+
+		<p>Tiap giliran, angka baru akan muncul di papan permainan dengan posisi dan nilai angka acak. Semakin tinggi level kamu, jumlah angka yang muncul di kotak semakin banyak.</p>
+
+		<p>Permainan selesai jika papan permainan penuh.</p>
+		<p>Semakin tinggi level permainan, semakin tinggi skor yang bisa kamu dapat, tapi ingat! Tingkat kesulitan semakin tinggi.</p>
+
+		<p><b>TIPS:</b></p>
+		<p><i><b>Temukan strategi untuk mengurangi jumlah angka sebanyak mungkin. Semakin besar jumlah angka di kotak dalam papan permainan, semakin sulit kamu menghilangkan kotak tersebut.</b></i></p>
+
+		<h3>Panduan Buat Kamu : </h3>
 		<ul>
-			<li><img src="image/even.png"> Angka Genap ditandai dengan warna hijau </li>
-			<li><img src="image/odd.png"> Angka Ganjil ditandai dengan warna biru </li>
-			<li><img src="image/decrease.png"> Angka akan memerah jika bertambah.</li>
-			<li><img src="image/increase.png"> Angka akan menguning jika berkurang</li>
+			<li><img src="image/even.png"> Angka Genap berwarna hijau.</li>
+			<li><img src="image/odd.png"> Angka Ganjil berwarna biru.</li>
+			<li><img src="image/decrease.png"> Animasi warna merah akan muncul jika angka bertambah.</li>
+			<li><img src="image/increase.png"> Animasi warna kuning akan muncul jika angka berkurang.</li>
 		</ul>
-		<p class="tab"><img src="image/next-current.png"></p><p class="tab2">Tiap giliran, angka baru akan muncul dengan posisi dan nilai angka yang acak. Makin tinggi level, jumlah angka yang muncul akan makin banyak. </p>
-		<p class="tab2"><b>Permainan selesai jika semua kotak penuh.</b></p>
-		<p class="tab2">Makin tinggi level, makin tinggi scorenya, namun tingkat kesulitannya juga makin tinggi.</p>
-		<h3>Power Up</h3>
-		Ada 3 bonus yang tersedia. 
+
+		<h3>Bonus!</h3>
+		<p>Ada 3 macam bonus yang bisa membantu kamu meraih skor lebih tinggi.</p>
 			<ul>
 				<li>
 					<h5><img src="image/multipolar.png"> <b>Multipolar</b></h5>
-					<p>Membuat angka lebih reaktif. Baik angka ganjil maupun genap, akan berkurang dengan multipolar. Raih 6 kali combo untuk mendapatkan multipolar.</p>
+					<p>Membuat angka lebih 'reaktif'. Angka ganjil maupun genap akan berkurang dengan multipolar. Buat 6 kali combo untuk mendapatkan multipolar.</p>
 				</li>
 				<li>
 					<h5><img src="image/bomb.png"> <b>Bomb</b></h5>
@@ -34,10 +56,65 @@
 				</li>
 				<li>
 					<h5><img src="image/undo.png"> <b>Undo</b></h5>
-					<p>Mengembalikan ke posisi angka sebelumya. Undo bertambah setiap penambahan level.</p>
+					<p>Mengembalikan permainan ke posisi sebelumya. Undo bertambah setiap level bertambah.</p>
 				</li>
 			</ul>	
 	</div>
-	<h1></h1>
+
+
+	<div class="text" ng-class="langEng">
+		<p>Reactive Number is a strategy puzzle game that hone your analytical skills.</p>
+		<p>In this game you will use simple math to gain score. You have to raise your score as much as possible before the game board is full.</p>
+
+
+		<h3>HOW TO PLAY</h3>
+		<p>At every turn, place the box containing the numbers on the empty area of the board. The number you got in the box can add or subtract other numbers surrounding.</p>
+
+		<p>If the box that you put on the game area is even, the even numbers on the board will be subtracted by the number in the box that you have. The same thing applied with odd numbers.</p>
+		<p>If you have even number and there are odd numbers on the board (or vice versa), then the odd numbers on the board will be added by your number.</p>
+		<p>Your score will increase when there are reduced numbers at every turn. Collect score as much as possible.</p>
+
+
+		<p><b>Try to see check out this case : </b></p>
+		<img class="responsive" src="image/help-image-sm.png">
+		<ol>
+			<li>The number that you have is 9.</li>
+			<li>Place your number to an empty area.</li>
+			<li>The surrounding area (indicated by pink line) will affected. Number 9 box (blue) will subtract the number on the one or more blue boxes, and add the number on one or more green boxes.</li>
+		</ol>  
+
+		<p>Each turn, a random number will appear on the game board with random position. The higher the level, the greater the number on the box.</p>
+
+		<p>The game is over when the game area is full.</p>
+		<p> Higher levels of the game, the higher the score that can you can, but remember! The higher difficulty levels.</p>
+
+		<p><b>TIPS:</b></p>
+		<p><i><b>Make your best strategy to reduce number as much as possible. The greater the number in the box, the harder you eliminate the box from the game area.</b></i></p>
+
+		<h3>GUIDELINES FOR YOU: </h3>
+		<ul>
+			<li><img src="image/even.png"> Even number is green-colored.</li>
+			<li><img src="image/odd.png"> Odd number is blue-colored.</li>
+			<li><img src="image/decrease.png"> Red animation will appear if numbers are added.</li>
+			<li><img src="image/increase.png"> Yellow animation will appear when number are subtracted.</li>
+		</ul>
+
+		<h3>Bonus!</h3>
+		<p>There are 3 kinds of bonuses that can help you achieve higher score.</p>
+			<ul>
+				<li>
+					<h5><img src="image/multipolar.png"> <b>Multipolar</b></h5>
+					<p>Make number in the box more 'reactive'. Both odd and even numbers will be subtracted by Multipolar item. Make 6 combos to get this item.</p>
+				</li>
+				<li>
+					<h5><img src="image/bomb.png"> <b>Bomb</b></h5>
+					<p>The surrounding box will instantly disappear with Bomb. Bomb obtained by removing 5 boxes at once in a turn.</p>
+				</li>
+				<li>
+					<h5><img src="image/undo.png"> <b>Undo</b></h5>
+					<p>Restore the game to the previous position. You will got 'Undo item' every time you increase your level.</p>
+				</li>
+			</ul>			
+	</div>
 
 </div>

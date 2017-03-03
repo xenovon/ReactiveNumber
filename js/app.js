@@ -1,8 +1,9 @@
 'use strict';
 
 var reactiveNumber = angular.module('reactiveNumber', [
-  'reactiveController','ngRoute','ngAnimate','ngDialog'
-]);
+  'reactiveController','ngRoute','ngAnimate','ngDialog']).run(function() {
+    FastClick.attach(document.body);
+  });;
 
 
 reactiveNumber.directive('backButton', function(){
@@ -93,8 +94,6 @@ reactiveNumber.directive('animateBoard',['$animate','$timeout', function($animat
             $animate.removeClass(elem.children(),classname);
           });
         }
-
-
       });
    };
 }]);
@@ -205,15 +204,17 @@ reactiveNumber.config(['$animateProvider',
 
 reactiveNumber.run(['$rootScope',function($rootScope) {
   $rootScope.$on('$routeChangeStart', function() {
-    console.log('progress start');
+    $rootScope.loadingView="show";  
   });
 
   $rootScope.$on('$routeChangeSuccess', function() {
-    console.log('progress complete');
+    $rootScope.loadingView="";  
   });
 
   $rootScope.$on('$routeChangeError', function() {
-    console.log('progress error');
+    $rootScope.loadingView="";  
   });  
   // Do the same with $routeChangeError
 }]);
+
+

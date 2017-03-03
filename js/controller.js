@@ -17,8 +17,9 @@ http://github.hubspot.com/odometer/docs/welcome/
 
 var reactiveController = angular.module('reactiveController',[]);
 var modalInstance;
-reactiveController.controller('GlobalCtrl', ['$scope', '$route','$location','scoreService', function ($scope,$route,$location,scoreService) {
+reactiveController.controller('GlobalCtrl', ['$scope', '$route','$location','scoreService','$rootScope', function ($scope,$route,$location,scoreService,$rootScope) {
      $scope.gameParent=new Game();
+     $rootScope.loadingView="";
      // $scope.isMenuActive=false;
      $scope.newGame=function(){
 
@@ -65,7 +66,8 @@ function($scope, $routeParams,$location,$animate, ngDialog, $timeout) {
                          currentTurn:''
      };
      $scope.currentLevel=0;               
-     $scope.score=0;    
+     $scope.score=0;
+     $scope.jValue;    
 
      if($scope.command=='continue'){
           $scope.game.continueGame();
@@ -90,7 +92,11 @@ function($scope, $routeParams,$location,$animate, ngDialog, $timeout) {
           $scope.game.bonus('bomb'); 		
           updateState("bomb");
      }  	
-
+     $scope.mouseOver=function(j){
+          if(j==0){
+              j=$scope.uiState.currentTurn;
+          }
+     }  
      $scope.turn=function(x,y){
           var r=$scope.game.turn(x,y);
           if(r.error.length==0){
@@ -253,17 +259,16 @@ reactiveController.controller('Home',['$scope', function($scope){
 
 }]);
 reactiveController.controller('HowTo',['$scope','$http', function($scope, $http){
-     var jsonData;
-     $scope.content;
-     $http.get('js/how-to-play.json').success(function(data) {
-         jsonData = data;
-         $scope.content=jsonData['en'];
-         console.log(JSON.stringify(jsonData));
-          console.log($scope.content);
-    });
+     $scope.langId='hide';
+     $scope.langEng='show';
      $scope.changeLang=function(lang){
-         $scope.content=jsonData[lang];
-         console.log($scope.content);
+          if(lang=='id'){
+               $scope.langId='show';
+               $scope.langEng='hide';               
+          }else if(lang=='en'){
+               $scope.langId='hide';
+               $scope.langEng='show';
+          }
      }
 
 }]);
@@ -288,15 +293,15 @@ reactiveController.controller('GameOver',['$scope','scoreService', function($sco
                // console.log('HighScore');
                return "New Highscore, Stunning!"
           }
-          if(score<1000){
+          if(score<10000){
                return "Don't Worry, You can get higher";
-          }else if(score>=1000 && score<5000){
+          }else if(score>=10000 && score<15000){
                return "Good Job, you're doing great";
-          }else if(score>=5000 && score<10000){
+          }else if(score>=15000 && score<30000){
                return "Fantastic, Keep it up!";
-          }else if(score>=10000 && score<20000){
+          }else if(score>=30000 && score<80000){
                return "You're Amazing! Congrats";
-          }else if(score>=20000){
+          }else if(score>=80000){
                return "It's Unbelievable! You're Extraordinary";
           }else{
                return "Keep it up!";
